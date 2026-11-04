@@ -1,0 +1,21 @@
+# HolidayMaximizer
+
+HolidayMaximizer.com is an annual-leave planning tool operated by Kattegat Studio (Denmark). It helps users combine annual leave, weekends and public holidays to identify efficient breaks.
+
+## Languages
+- English: https://holidaymaximizer.com/
+- French: https://holidaymaximizer.com/fr/
+
+## Key pages
+- Planner: https://holidaymaximizer.com/
+- Countries: https://holidaymaximizer.com/countries/
+- Compare countries: https://holidaymaximizer.com/compare/
+- Global ranking: https://holidaymaximizer.com/ranking/
+- Methodology: https://holidaymaximizer.com/how-it-works/
+- Sources and data: https://holidaymaximizer.com/sources/
+- Privacy: https://holidaymaximizer.com/privacy/
+- Legal/business information: https://holidaymaximizer.com/legal/
+
+Country employment-law context is only described as verified when an official or authoritative source is cited. Public-holiday dates and leave entitlements can change and should be confirmed before booking.
+
+Annual leave ranking: 65 verified country guides, each with an official source and a comparable five-day-week equivalent. Service-length controls adjust tenure-sensitive systems.

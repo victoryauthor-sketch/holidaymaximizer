@@ -1,0 +1,762 @@
+{
+  "LU": {
+    "min": 11,
+    "max": 11,
+    "note": ""
+  },
+  "AT": {
+    "min": 13,
+    "max": 18,
+    "note": "regional/workplace variation"
+  },
+  "DK": {
+    "min": 10,
+    "max": 10,
+    "note": ""
+  },
+  "FR": {
+    "min": 11,
+    "max": 13,
+    "note": "regional variation"
+  },
+  "SE": {
+    "min": 12,
+    "max": 12,
+    "note": ""
+  },
+  "GE": {
+    "min": 15,
+    "max": 15,
+    "note": ""
+  },
+  "IS": {
+    "min": 16,
+    "max": 16,
+    "note": ""
+  },
+  "MT": {
+    "min": 14,
+    "max": 14,
+    "note": ""
+  },
+  "MU": {
+    "min": 16,
+    "max": 16,
+    "note": ""
+  },
+  "PT": {
+    "min": 13,
+    "max": 15,
+    "note": "regional variation"
+  },
+  "AE": {
+    "min": 14,
+    "max": 14,
+    "note": ""
+  },
+  "BR": {
+    "min": 9,
+    "max": 12,
+    "note": "state/municipal variation"
+  },
+  "ES": {
+    "min": 12,
+    "max": 13,
+    "note": "regional variation"
+  },
+  "OM": {
+    "min": 9,
+    "max": 9,
+    "note": ""
+  },
+  "PE": {
+    "min": 14,
+    "max": 14,
+    "note": ""
+  },
+  "KE": {
+    "min": 13,
+    "max": 13,
+    "note": ""
+  },
+  "NO": {
+    "min": 12,
+    "max": 12,
+    "note": ""
+  },
+  "AU": {
+    "min": 10,
+    "max": 13,
+    "note": "state/territory variation"
+  },
+  "BE": {
+    "min": 10,
+    "max": 10,
+    "note": ""
+  },
+  "BG": {
+    "min": 12,
+    "max": 12,
+    "note": ""
+  },
+  "CH": {
+    "min": 9,
+    "max": 15,
+    "note": "canton variation"
+  },
+  "CY": {
+    "min": 14,
+    "max": 14,
+    "note": ""
+  },
+  "CZ": {
+    "min": 13,
+    "max": 13,
+    "note": ""
+  },
+  "DE": {
+    "min": 9,
+    "max": 13,
+    "note": "state variation"
+  },
+  "EE": {
+    "min": 12,
+    "max": 12,
+    "note": ""
+  },
+  "FI": {
+    "min": 13,
+    "max": 13,
+    "note": ""
+  },
+  "GB": {
+    "min": 8,
+    "max": 10,
+    "note": "8 in England & Wales; varies by nation"
+  },
+  "GR": {
+    "min": 12,
+    "max": 12,
+    "note": ""
+  },
+  "HR": {
+    "min": 14,
+    "max": 14,
+    "note": ""
+  },
+  "HU": {
+    "min": 11,
+    "max": 13,
+    "note": "calendar variation"
+  },
+  "IE": {
+    "min": 10,
+    "max": 10,
+    "note": ""
+  },
+  "IT": {
+    "min": 12,
+    "max": 12,
+    "note": ""
+  },
+  "LT": {
+    "min": 15,
+    "max": 15,
+    "note": ""
+  },
+  "LV": {
+    "min": 13,
+    "max": 13,
+    "note": ""
+  },
+  "ME": {
+    "min": 16,
+    "max": 16,
+    "note": "religious entitlement can vary"
+  },
+  "NL": {
+    "min": 11,
+    "max": 11,
+    "note": "official holidays; no general statutory right to the day off"
+  },
+  "NZ": {
+    "min": 12,
+    "max": 12,
+    "note": ""
+  },
+  "PL": {
+    "min": 14,
+    "max": 14,
+    "note": ""
+  },
+  "RO": {
+    "min": 15,
+    "max": 15,
+    "note": ""
+  },
+  "RS": {
+    "min": 9,
+    "max": 11,
+    "note": "religious entitlement can vary"
+  },
+  "SI": {
+    "min": 14,
+    "max": 14,
+    "note": ""
+  },
+  "SK": {
+    "min": 14,
+    "max": 15,
+    "note": "calendar variation"
+  },
+  "UY": {
+    "min": 12,
+    "max": 12,
+    "note": ""
+  },
+  "CL": {
+    "min": 16,
+    "max": 17,
+    "note": "calendar/workplace variation"
+  },
+  "CO": {
+    "min": 19,
+    "max": 19,
+    "note": ""
+  },
+  "KR": {
+    "min": 14,
+    "max": 14,
+    "note": ""
+  },
+  "QA": {
+    "min": 10,
+    "max": 10,
+    "note": ""
+  },
+  "SA": {
+    "min": 10,
+    "max": 10,
+    "note": ""
+  },
+  "ZA": {
+    "min": 12,
+    "max": 12,
+    "note": ""
+  },
+  "JO": {
+    "min": 10,
+    "max": 14,
+    "note": "calendar/religious variation"
+  },
+  "MX": {
+    "min": 7,
+    "max": 8,
+    "note": "presidential-cycle variation"
+  },
+  "PY": {
+    "min": 12,
+    "max": 12,
+    "note": ""
+  },
+  "VN": {
+    "min": 6,
+    "max": 6,
+    "note": "multi-day Tet period not represented by a single count"
+  },
+  "AR": {
+    "min": 16,
+    "max": 19,
+    "note": "province/workplace variation"
+  },
+  "CA": {
+    "min": 10,
+    "max": 13,
+    "note": "jurisdiction variation"
+  },
+  "CR": {
+    "min": 9,
+    "max": 9,
+    "note": ""
+  },
+  "JP": {
+    "min": 16,
+    "max": 16,
+    "note": "national holidays; paid-time-off treatment differs by employer"
+  },
+  "MY": {
+    "min": 11,
+    "max": 24,
+    "note": "state variation"
+  },
+  "HK": {
+    "min": 17,
+    "max": 17,
+    "note": ""
+  },
+  "SG": {
+    "min": 11,
+    "max": 13,
+    "note": "election-year variation"
+  },
+  "TW": {
+    "min": 16,
+    "max": 16,
+    "note": ""
+  },
+  "TH": {
+    "min": 16,
+    "max": 16,
+    "note": ""
+  },
+  "CN": {
+    "min": 13,
+    "max": 13,
+    "note": ""
+  },
+  "PH": {
+    "min": 18,
+    "max": 18,
+    "note": ""
+  },
+  "US": {
+    "min": 11,
+    "max": 11,
+    "note": "annual federal holidays; private-sector paid leave is not mandated"
+  },
+  "IR": {
+    "min": 27,
+    "max": 27,
+    "note": "secondary benchmark"
+  },
+  "KI": {
+    "min": 16,
+    "max": 16,
+    "note": "secondary benchmark"
+  },
+  "BF": {
+    "min": 15,
+    "max": 15,
+    "note": "secondary benchmark"
+  },
+  "KH": {
+    "min": 27,
+    "max": 27,
+    "note": "secondary benchmark"
+  },
+  "AD": {
+    "min": 14,
+    "max": 14,
+    "note": "secondary benchmark"
+  },
+  "BH": {
+    "min": 14,
+    "max": 14,
+    "note": "secondary benchmark"
+  },
+  "KW": {
+    "min": 13,
+    "max": 13,
+    "note": "secondary benchmark"
+  },
+  "RU": {
+    "min": 14,
+    "max": 14,
+    "note": "secondary benchmark"
+  },
+  "DZ": {
+    "min": 11,
+    "max": 11,
+    "note": "secondary benchmark"
+  },
+  "LK": {
+    "min": 20,
+    "max": 20,
+    "note": "secondary benchmark"
+  },
+  "KZ": {
+    "min": 16,
+    "max": 16,
+    "note": "secondary benchmark"
+  },
+  "AZ": {
+    "min": 19,
+    "max": 19,
+    "note": "secondary benchmark"
+  },
+  "PA": {
+    "min": 10,
+    "max": 10,
+    "note": "secondary benchmark"
+  },
+  "AL": {
+    "min": 12,
+    "max": 12,
+    "note": "secondary benchmark"
+  },
+  "TZ": {
+    "min": 17,
+    "max": 17,
+    "note": "secondary benchmark"
+  },
+  "YE": {
+    "min": 15,
+    "max": 15,
+    "note": "secondary benchmark"
+  },
+  "UA": {
+    "min": 13,
+    "max": 13,
+    "note": "secondary benchmark"
+  },
+  "SY": {
+    "min": 13,
+    "max": 13,
+    "note": "secondary benchmark"
+  },
+  "BJ": {
+    "min": 13,
+    "max": 13,
+    "note": "secondary benchmark"
+  },
+  "LB": {
+    "min": 22,
+    "max": 22,
+    "note": "secondary benchmark"
+  },
+  "MH": {
+    "min": 11,
+    "max": 11,
+    "note": "secondary benchmark"
+  },
+  "AM": {
+    "min": 12,
+    "max": 12,
+    "note": "secondary benchmark"
+  },
+  "IN": {
+    "min": 10,
+    "max": 10,
+    "note": "secondary benchmark"
+  },
+  "AF": {
+    "min": 15,
+    "max": 15,
+    "note": "secondary benchmark"
+  },
+  "MG": {
+    "min": 13,
+    "max": 13,
+    "note": "secondary benchmark"
+  },
+  "BA": {
+    "min": 10,
+    "max": 10,
+    "note": "secondary benchmark"
+  },
+  "DJ": {
+    "min": 10,
+    "max": 10,
+    "note": "secondary benchmark"
+  },
+  "EG": {
+    "min": 17,
+    "max": 17,
+    "note": "secondary benchmark"
+  },
+  "CI": {
+    "min": 14,
+    "max": 14,
+    "note": "secondary benchmark"
+  },
+  "GA": {
+    "min": 14,
+    "max": 14,
+    "note": "secondary benchmark"
+  },
+  "ST": {
+    "min": 9,
+    "max": 9,
+    "note": "secondary benchmark"
+  },
+  "SC": {
+    "min": 13,
+    "max": 13,
+    "note": "secondary benchmark"
+  },
+  "AO": {
+    "min": 11,
+    "max": 11,
+    "note": "secondary benchmark"
+  },
+  "NE": {
+    "min": 11,
+    "max": 11,
+    "note": "secondary benchmark"
+  },
+  "ZW": {
+    "min": 11,
+    "max": 11,
+    "note": "secondary benchmark"
+  },
+  "GN": {
+    "min": 11,
+    "max": 11,
+    "note": "secondary benchmark"
+  },
+  "CU": {
+    "min": 9,
+    "max": 9,
+    "note": "secondary benchmark"
+  },
+  "BY": {
+    "min": 9,
+    "max": 9,
+    "note": "secondary benchmark"
+  },
+  "SN": {
+    "min": 12,
+    "max": 12,
+    "note": "secondary benchmark"
+  },
+  "SS": {
+    "min": 12,
+    "max": 12,
+    "note": "secondary benchmark"
+  },
+  "MK": {
+    "min": 12,
+    "max": 12,
+    "note": "secondary benchmark"
+  },
+  "ZM": {
+    "min": 11,
+    "max": 11,
+    "note": ""
+  },
+  "BO": {
+    "min": 11,
+    "max": 11,
+    "note": "secondary benchmark"
+  },
+  "ID": {
+    "min": 18,
+    "max": 18,
+    "note": "secondary benchmark"
+  },
+  "BI": {
+    "min": 13,
+    "max": 13,
+    "note": "secondary benchmark"
+  },
+  "SR": {
+    "min": 18,
+    "max": 18,
+    "note": "secondary benchmark"
+  },
+  "PK": {
+    "min": 15,
+    "max": 15,
+    "note": "secondary benchmark"
+  },
+  "VE": {
+    "min": 14,
+    "max": 14,
+    "note": "secondary benchmark"
+  },
+  "BW": {
+    "min": 14,
+    "max": 14,
+    "note": "secondary benchmark"
+  },
+  "UG": {
+    "min": 13,
+    "max": 13,
+    "note": "secondary benchmark"
+  },
+  "GH": {
+    "min": 13,
+    "max": 13,
+    "note": "secondary benchmark"
+  },
+  "NP": {
+    "min": 13,
+    "max": 13,
+    "note": "secondary benchmark"
+  },
+  "TD": {
+    "min": 3,
+    "max": 3,
+    "note": "secondary benchmark"
+  },
+  "HT": {
+    "min": 16,
+    "max": 16,
+    "note": "secondary benchmark"
+  },
+  "BZ": {
+    "min": 13,
+    "max": 13,
+    "note": "secondary benchmark"
+  },
+  "LC": {
+    "min": 13,
+    "max": 13,
+    "note": "secondary benchmark"
+  },
+  "TR": {
+    "min": 14.5,
+    "max": 14.5,
+    "note": "secondary benchmark"
+  },
+  "RW": {
+    "min": 11,
+    "max": 11,
+    "note": "secondary benchmark"
+  },
+  "SV": {
+    "min": 11,
+    "max": 11,
+    "note": "secondary benchmark"
+  },
+  "ET": {
+    "min": 13,
+    "max": 13,
+    "note": "secondary benchmark"
+  },
+  "MA": {
+    "min": 13,
+    "max": 13,
+    "note": "secondary benchmark"
+  },
+  "GT": {
+    "min": 10,
+    "max": 10,
+    "note": "secondary benchmark"
+  },
+  "MM": {
+    "min": 14,
+    "max": 14,
+    "note": "secondary benchmark"
+  },
+  "TT": {
+    "min": 14,
+    "max": 14,
+    "note": "secondary benchmark"
+  },
+  "EC": {
+    "min": 12,
+    "max": 12,
+    "note": "secondary benchmark"
+  },
+  "DO": {
+    "min": 13,
+    "max": 13,
+    "note": "secondary benchmark"
+  },
+  "GD": {
+    "min": 13,
+    "max": 13,
+    "note": "secondary benchmark"
+  },
+  "AG": {
+    "min": 11,
+    "max": 11,
+    "note": "secondary benchmark"
+  },
+  "SO": {
+    "min": 9,
+    "max": 9,
+    "note": "secondary benchmark"
+  },
+  "MR": {
+    "min": 7,
+    "max": 7,
+    "note": "secondary benchmark"
+  },
+  "LS": {
+    "min": 10,
+    "max": 10,
+    "note": "secondary benchmark"
+  },
+  "FJ": {
+    "min": 12,
+    "max": 12,
+    "note": "secondary benchmark"
+  },
+  "DM": {
+    "min": 12,
+    "max": 12,
+    "note": "secondary benchmark"
+  },
+  "BD": {
+    "min": 11,
+    "max": 11,
+    "note": "secondary benchmark"
+  },
+  "IL": {
+    "min": 9,
+    "max": 9,
+    "note": "secondary benchmark"
+  },
+  "LR": {
+    "min": 11,
+    "max": 11,
+    "note": "secondary benchmark"
+  },
+  "WS": {
+    "min": 11,
+    "max": 11,
+    "note": "secondary benchmark"
+  },
+  "NI": {
+    "min": 9,
+    "max": 9,
+    "note": "secondary benchmark"
+  },
+  "BS": {
+    "min": 10,
+    "max": 10,
+    "note": "secondary benchmark"
+  },
+  "MZ": {
+    "min": 9,
+    "max": 9,
+    "note": "secondary benchmark"
+  },
+  "HN": {
+    "min": 11,
+    "max": 11,
+    "note": "secondary benchmark"
+  },
+  "PG": {
+    "min": 9,
+    "max": 9,
+    "note": "secondary benchmark"
+  },
+  "JE": {
+    "min": 9,
+    "max": 9,
+    "note": "secondary benchmark"
+  },
+  "BN": {
+    "min": 11,
+    "max": 11,
+    "note": "secondary benchmark"
+  },
+  "TN": {
+    "min": 6,
+    "max": 6,
+    "note": "secondary benchmark"
+  },
+  "MO": {
+    "min": 10,
+    "max": 10,
+    "note": ""
+  },
+  "FM": {
+    "min": 5,
+    "max": 5,
+    "note": ""
+  }
+}
