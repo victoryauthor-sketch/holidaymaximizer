@@ -4,29 +4,9 @@ import vm from 'node:vm';
 
 const ROOT = 'C:/Users/HP-User/.gemini/antigravity/scratch/holidaymaximizer';
 const V12_SRC = 'C:/Users/HP-User/Documents/Codex/2026-10-17/yo/work/release';
-const TODAY = '2026-11-04';
+const TODAY = '2026-11-06';
 const GSC_VERIFICATION = 'uBlwh9aRM-wKTubHzWG6-WVt3_PWccE_kHOQRorzKEE';
-
-const ADSTERRA_UNITS = {
-  desktopBanner: {
-    key: '8da4f60a736e13046a9c88be9b8de6bd',
-    width: 728,
-    height: 90,
-    scriptUrl: 'https://bauval.org/22/8da4f60a736e13046a9c88be9b8de6bd'
-  },
-  rectangleBanner: {
-    key: '17d46e7ef75e864b11e99a78a4ef5046',
-    width: 300,
-    height: 250,
-    scriptUrl: 'https://bauval.org/22/17d46e7ef75e864b11e99a78a4ef5046'
-  },
-  mobileBanner: {
-    key: '5302600cb2f933f200f0cf885a9bf708',
-    width: 320,
-    height: 50,
-    scriptUrl: 'https://bauval.org/22/5302600cb2f933f200f0cf885a9bf708'
-  }
-};
+const INDEXNOW_KEY = '4f8b9c2d1e6a7f3b5c8d9e0f1a2b3c4d';
 
 const REGION_SLUGS = {
   'DK': 'denmark',
@@ -57,145 +37,206 @@ const REGION_SLUGS = {
 const FLAGSHIP_CFG = {
   DK: {
     name: 'Denmark',
+    nameFr: 'Danemark',
     key: 'DK',
     scope: 'National calendar',
+    scopeFr: 'Calendrier national',
     url: 'https://www.nationalbanken.dk/en/what-we-do/stable-prices-monetary-policy-and-the-danish-economy/bank-holidays',
     authority: 'Danmarks Nationalbank',
-    note: 'Bank closure dates are not all general days off. This model excludes 5 June, Christmas Eve, New Year’s Eve and the Friday after Ascension. Check your contract for extra days.',
-    focus: 'Easter combines three weekday holidays in 2027 (Maundy Thursday, Good Friday and Easter Monday). Ascension Day on Thursday 6 May creates a classic four-day bridge weekend by booking Friday 7 May.'
+    note: 'Bank closure dates are not all statutory general days off. This model excludes 5 June (Constitution Day), 24 December, 31 December and the Friday after Ascension, as well as the abolished Store bededag holiday. Many Danish collective agreements grant 5 extra contract leave days (feriefridage) and paid time off on 24 December; confirm your contract before booking.',
+    noteFr: 'Les fermetures bancaires ne sont pas toutes des jours fériés légaux chômés. Ce modèle exclut le 5 juin (Constitution), les 24 et 31 décembre ainsi que le vendredi suivant l’Ascension. De nombreuses conventions collectives accordent 5 jours supplémentaires (feriefridage) ; vérifiez votre contrat.',
+    focus: 'Easter combines three weekday public holidays in 2027 (Maundy Thursday 25 March, Good Friday 26 March and Easter Monday 29 March). Ascension Day on Thursday 6 May and Whit Monday on 17 May create strong May bridge windows.',
+    focusFr: 'En 2027, Pâques réunit trois jours fériés en semaine (jeudi saint 25 mars, vendredi saint 26 mars et lundi de Pâques 29 mars). L’Ascension (jeudi 6 mai) et le lundi de Pentecôte (17 mai) offrent deux ponts majeurs au printemps.'
   },
   GB: {
     name: 'UK',
+    nameFr: 'Royaume-Uni',
     key: 'GB-ENG',
     scope: 'England and Wales',
+    scopeFr: 'Angleterre et Pays de Galles',
     url: 'https://www.gov.uk/bank-holidays',
     authority: 'GOV.UK',
-    note: 'These examples use England and Wales. Choose Scotland or Northern Ireland in the planner for a different calendar. Bank holidays can be included in your statutory leave allowance; enter the days still available to book.',
-    focus: 'In 2027, Good Friday (26 March) and Easter Monday (29 March) anchor a high-efficiency 10-day spring break for just 4 leave days, while substitute bank holidays for Christmas and Boxing Day fall on Monday 27 and Tuesday 28 December.'
+    note: 'These examples use the England and Wales bank-holiday calendar (8 bank holidays). Choose Scotland (9 bank holidays) or Northern Ireland (10 bank holidays) below or in the planner for regional dates. Under UK law, statutory minimum leave is 5.6 weeks (28 days) which may include bank holidays depending on your employment contract—enter only the bookable leave days remaining in your allowance.',
+    noteFr: 'Ces exemples utilisent le calendrier d’Angleterre et du Pays de Galles (8 bank holidays). Choisissez l’Écosse ou l’Irlande du Nord dans le planificateur pour les dates régionales. Le minimum légal britannique de 28 jours peut inclure les jours fériés selon votre contrat : saisissez uniquement votre solde de congés à poser.',
+    focus: 'In 2027, Good Friday (26 March) and Easter Monday (29 March) turn 4 leave days into a 10-day spring break, while official substitute bank holidays for Christmas Day and Boxing Day fall on Monday 27 and Tuesday 28 December 2027.',
+    focusFr: 'En 2027, le Vendredi saint (26 mars) et le lundi de Pâques (29 mars) transforment 4 jours posés en 10 jours de repos, tandis que les jours fériés de substitution pour Noël et Boxing Day tombent les lundi 27 et mardi 28 décembre 2027.'
   },
   IE: {
     name: 'Ireland',
+    nameFr: 'Irlande',
     key: 'IE',
     scope: 'National calendar',
+    scopeFr: 'Calendrier national',
     url: 'https://www.workplacerelations.ie/en/what_you_should_know/public-holidays/',
     authority: 'Workplace Relations Commission',
-    note: 'Good Friday is not a statutory public holiday in Ireland. A weekend holiday does not automatically make the following Monday a day off; your employer determines the applicable benefit.',
-    focus: 'St Brigid’s Day (Monday 1 February), St Patrick’s Day (Wednesday 17 March), and Easter Monday (29 March) provide three distinct spring leverage windows in 2027.'
+    note: 'Good Friday is a bank/school closure in some sectors but is not a statutory public holiday in Ireland. When a public holiday falls on a weekend, there is no automatic legal right to the next Monday off, though employers must provide a paid day off within a month, an additional day of annual leave, or an additional day’s pay.',
+    noteFr: 'Le Vendredi saint n’est pas un jour férié légal en Irlande. Lorsqu’un jour férié tombe le week-end, le lundi suivant n’est pas automatiquement chômé de plein droit, mais l’employeur doit accorder une contrepartie légale (jour de repos, congé supplémentaire ou majoration).',
+    focus: 'St Brigid’s Day (Monday 1 February), St Patrick’s Day (Wednesday 17 March), and Easter Monday (29 March) provide three distinct spring leverage windows in 2027.',
+    focusFr: 'La Sainte-Brigitte (lundi 1er février), la Saint-Patrick (mercredi 17 mars) et le lundi de Pâques (29 mars) offrent trois fenêtres d’optimisation au printemps 2027.'
   },
   DE: {
     name: 'Germany',
+    nameFr: 'Allemagne',
     key: 'DE-BE',
     scope: 'Berlin & regional calendars',
+    scopeFr: 'Berlin et calendriers des Länder',
     url: 'https://www.berlin.de/en/tourism/travel-information/1887651-2862820-public-holidays-school-holidays.en.html',
     authority: 'Berlin.de',
-    note: 'Germany has no single complete state calendar. These baseline calculations use Berlin (including 8 March). Select Bavaria, North Rhine-Westphalia, Hamburg or Saxony below or in the planner for state-specific holidays such as Corpus Christi, Epiphany or Reformation Day.',
-    focus: 'International Women’s Day falls on Monday 8 March 2027 in Berlin, while Good Friday (26 March), Easter Monday (29 March), Ascension Day (Thursday 6 May) and Whit Monday (17 May) offer high-multiplier bridge weeks across all German states.'
+    note: 'German public holidays are governed by state (Land) law. These baseline examples use Berlin (which observes International Women’s Day on 8 March). Select Bavaria, North Rhine-Westphalia, Hamburg or Saxony below or in the planner for state-specific holidays such as Epiphany (6 January), Corpus Christi (27 May), Reformation Day (31 October), All Saints’ Day (1 November) or Repentance and Prayer Day (17 November). Germany does not grant substitute weekday holidays when a statutory holiday falls on a weekend.',
+    noteFr: 'Les jours fériés allemands relèvent des Länder. Ces calculs utilisent Berlin (incluant le 8 mars). Sélectionnez la Bavière, la Rhénanie-du-Nord-Westphalie, Hambourg ou la Saxe pour les fêtes régionales (Épiphanie, Fête-Dieu, Toussaint). Les jours fériés tombant un week-end ne sont pas reportés en Allemagne.',
+    focus: 'International Women’s Day falls on Monday 8 March 2027 in Berlin, while Good Friday (26 March), Easter Monday (29 March), Ascension Day (Thursday 6 May) and Whit Monday (17 May) create high-multiplier bridge weeks across Germany.',
+    focusFr: 'La Journée internationale des droits des femmes tombe le lundi 8 mars 2027 à Berlin, suivie du Vendredi saint (26 mars), du lundi de Pâques (29 mars), de l’Ascension (jeudi 6 mai) et de la Pentecôte (17 mai).'
   },
   FR: {
     name: 'France',
+    nameFr: 'France',
     key: 'FR',
     scope: 'Metropolitan national calendar',
+    scopeFr: 'Calendrier national métropolitain',
     url: 'https://www.service-public.gouv.fr/particuliers/vosdroits/F2405',
-    authority: 'Service Public',
-    note: 'These examples assume the listed holidays are non-working days for you. Whit Monday may be worked under solidarity-day arrangements. Alsace-Moselle and overseas calendars need local checking.',
-    focus: 'Ascension Day (Thursday 6 May 2027), Bastille Day (Wednesday 14 July) and Armistice Day (Thursday 11 November) provide prime French “faire le pont” bridge opportunities.'
+    authority: 'Service-Public.fr',
+    note: 'In France, only 1 May (Labour Day) is statutorily required to be non-working for all employees, though most collective agreements treat the other 10 national public holidays as paid days off. Whit Monday may be worked as the unpaid solidarity day (journée de solidarité). Alsace-Moselle (Good Friday and 26 December) and overseas departments have additional statutory holidays. Enter your 5-day-week congés payés or RTT allowance.',
+    noteFr: 'En France, seul le 1er mai est légalement chômé pour tous, mais la plupart des conventions collectives chôment les 10 autres jours fériés nationaux. Le lundi de Pentecôte peut être travaillé au titre de la journée de solidarité. L’Alsace-Moselle et l’Outre-mer disposent de jours fériés supplémentaires.',
+    focus: 'Ascension Day (Thursday 6 May 2027), Bastille Day (Wednesday 14 July) and Armistice Day (Thursday 11 November) provide prime French “faire le pont” bridge opportunities.',
+    focusFr: 'Le jeudi de l’Ascension (6 mai 2027), la Fête nationale (mercredi 14 juillet) et l’Armistice (jeudi 11 novembre) offrent d’excellentes opportunités de ponts en 2027.'
   },
   NL: {
     name: 'Netherlands',
+    nameFr: 'Pays-Bas',
     key: 'NL',
-    scope: 'Bundled planning calendar',
+    scope: 'National public holidays',
+    scopeFr: 'Jours fériés nationaux',
     url: 'https://www.government.nl/themes/work/working-hours/question-and-answer/work/public-holidays-in-the-netherlands',
     authority: 'Government.nl',
-    note: 'A public holiday does not automatically entitle you to time off. This calendar assumes Liberation Day is off but excludes Good Friday; check your CAO or contract before using those results.',
-    focus: 'King’s Day falls on Tuesday 27 April 2027, followed the next week by Liberation Day (Wednesday 5 May) and Ascension Day (Thursday 6 May) for workers whose CAO grants Liberation Day off.'
+    note: 'Under Dutch law, there is no automatic statutory right to a paid day off on a public holiday; your collective labour agreement (CAO) or employment contract determines which holidays are off. This calendar includes King’s Day (27 April), Liberation Day (5 May) and Ascension Day (6 May), and excludes Good Friday (often worked in the private sector). Verify your CAO before booking.',
+    noteFr: 'Aux Pays-Bas, la loi n’accorde pas automatiquement un jour chômé payé les jours fériés : votre convention collective (CAO) ou votre contrat détermine les jours chômés (notamment pour le 5 mai et le Vendredi saint). Vérifiez votre CAO avant de poser vos congés.',
+    focus: 'King’s Day falls on Tuesday 27 April 2027, followed the next week by Liberation Day (Wednesday 5 May) and Ascension Day (Thursday 6 May) for workers whose CAO grants Liberation Day off.',
+    focusFr: 'La Fête du Roi tombe le mardi 27 avril 2027, suivie la semaine suivante par le Jour de la Libération (mercredi 5 mai) et l’Ascension (jeudi 6 mai).'
   },
   IT: {
     name: 'Italy',
+    nameFr: 'Italie',
     key: 'IT',
     scope: 'National calendar',
+    scopeFr: 'Calendrier national',
     url: 'https://www.italia.it/en/italy/practical-information/time-zones-and-public-holidays-italy',
     authority: 'Italia.it',
     extra: 'https://www.normattiva.it/eli/id/2025/10/10/25G00153/CONSOLIDATED',
-    note: 'Local patron-saint holidays are not included. The calendar includes 4 October, the national holiday for St Francis of Assisi effective from 2026 under Law 151/2025.',
-    focus: 'Epiphany falls on Wednesday 6 January 2027, Republic Day on Wednesday 2 June, St Francis of Assisi on Monday 4 October, and Immaculate Conception on Wednesday 8 December—creating strong mid-week and long-weekend bridges throughout the year.'
+    note: 'Local municipal patron-saint holidays (such as 29 June in Rome or 7 December in Milan) are not included in the national baseline. The calendar includes 4 October, the restored national public holiday for St Francis of Assisi effective from 2026 under Law 151/2025. In Italy, public holidays falling on Sunday usually confer additional pay (festività non goduta) rather than a replacement Monday off.',
+    noteFr: 'Les fêtes patronales municipales ne sont pas incluses dans le calendrier national. Le calendrier intègre le 4 octobre (Saint François d’Assise), rétabli comme jour férié national par la loi 151/2025. Les jours fériés tombant un dimanche donnent généralement lieu à une indemnité plutôt qu’à un report.',
+    focus: 'Epiphany falls on Wednesday 6 January 2027, Republic Day on Wednesday 2 June, St Francis of Assisi on Monday 4 October, and Immaculate Conception on Wednesday 8 December—creating strong mid-week “ponte” bridges throughout 2027.',
+    focusFr: 'L’Épiphanie (mercredi 6 janvier 2027), la Fête de la République (mercredi 2 juin), la Saint-François (lundi 4 octobre) et l’Immaculée Conception (mercredi 8 décembre) permettent de nombreux ponts en 2027.'
   },
   US: {
     name: 'United States',
+    nameFr: 'États-Unis',
     key: 'US',
     scope: 'Federal observed calendar, Monday–Friday schedule',
+    scopeFr: 'Calendrier fédéral observé (horaire Lun–Ven)',
     url: 'https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/',
     authority: 'U.S. Office of Personnel Management',
-    note: 'Federal holidays are not a promise of paid time off for private-sector workers. Check which dates your employer observes. State-specific days are not included in these examples.',
-    focus: 'In 2027, observed federal holidays include Friday 18 June (Juneteenth), Monday 5 July (Independence Day), Thursday 11 November (Veterans Day), Thursday 25 November (Thanksgiving) and Friday 24 December (Christmas Day observed).'
+    note: 'The United States has no federal statutory paid vacation minimum for private-sector workers, and federal holidays apply by law only to federal employees. Private employers decide which holidays are paid days off (for example, many private employers grant the Friday after Thanksgiving off while not observing Columbus Day or Veterans Day). Check your employer handbook.',
+    noteFr: 'Les États-Unis n’imposent pas de congé payé légal fédéral dans le secteur privé, et les jours fériés fédéraux (OPM) ne s’imposent légalement qu’aux employés fédéraux. Vérifiez les jours effectivement chômés par votre employeur.',
+    focus: 'In 2027, OPM observed federal holidays include Friday 18 June (Juneteenth observed), Monday 5 July (Independence Day observed), Thursday 11 November (Veterans Day), Thursday 25 November (Thanksgiving) and Friday 24 December (Christmas Day observed).',
+    focusFr: 'En 2027, les jours fériés fédéraux observés incluent le vendredi 18 juin (Juneteenth), le lundi 5 juillet (Independence Day), le jeudi 11 novembre (Veterans Day), le jeudi 25 novembre (Thanksgiving) et le vendredi 24 décembre (Noël observé).'
   },
   AT: {
     name: 'Austria',
+    nameFr: 'Autriche',
     key: 'AT',
     scope: 'National calendar',
+    scopeFr: 'Calendrier national',
     url: 'https://www.bmeia.gv.at/fileadmin/user_upload/Vertretungen/Kopenhagen/Aktuelles/Feiertage_2025-2027.pdf',
     authority: 'Austrian Foreign Ministry holiday calendar',
-    note: 'These examples use the nationwide calendar, not school holidays or additional local patron-saint days. A weekend holiday is not automatically moved to Monday in this model.',
-    focus: 'Austria’s 2027 calendar features Epiphany on Wednesday 6 January, Ascension on Thursday 6 May, Corpus Christi on Thursday 27 May, National Day on Tuesday 26 October (classic “Fenstertag” on Monday 25 October) and Immaculate Conception on Wednesday 8 December.'
+    note: 'These examples use Austria’s 13 statutory national public holidays under the Arbeitsruhegesetz. State patron-saint days (which mainly affect schools and state offices) and collective-agreement half-days on 24 and 31 December are not assumed off. Weekend public holidays do not shift to Monday in Austria.',
+    noteFr: 'Ces exemples utilisent les 13 jours fériés nationaux autrichiens (Arbeitsruhegesetz). Les fêtes régionales et les demi-journées des 24 et 31 décembre ne sont pas présumées chômées, et les jours fériés du week-end ne sont pas reportés au lundi.',
+    focus: 'Austria’s 2027 calendar features Epiphany on Wednesday 6 January, Ascension on Thursday 6 May, Corpus Christi on Thursday 27 May, National Day on Tuesday 26 October (classic “Fenstertag” on Monday 25 October) and Immaculate Conception on Wednesday 8 December.',
+    focusFr: 'Le calendrier autrichien 2027 compte l’Épiphanie (mercredi 6 janvier), l’Ascension (jeudi 6 mai), la Fête-Dieu (jeudi 27 mai), la Fête nationale (mardi 26 octobre, idéal pour un « Fenstertag » le lundi 25) et le mercredi 8 décembre.'
   },
   BE: {
     name: 'Belgium',
+    nameFr: 'Belgique',
     key: 'BE',
     scope: 'National dates before employer replacement days',
+    scopeFr: 'Dates nationales avant jours de remplacement',
     url: 'https://employment.belgium.be/en/themes/international/posting/working-conditions-be-respected-case-posting-belgium/public-holidays',
     authority: 'Belgian FPS Employment',
-    note: 'Weekend or usual non-working-day holidays require replacement days under applicable arrangements. This model does not invent those dates: ask your employer and adjust your booking accordingly.',
-    focus: 'Ascension Day (Thursday 6 May 2027), Whit Monday (17 May), Belgian National Day (Wednesday 21 July) and Armistice Day (Thursday 11 November) anchor Belgium’s highest-value weekday combinations.'
+    note: 'Under Belgian law, when one of the 10 statutory public holidays falls on a Sunday or a normal non-working day (such as Saturday on a Mon–Fri schedule — in 2027: 1 May, 15 August and 25 December), it must be replaced by a working day. Because joint committees or employers often fix replacement days onto bridge Fridays (such as Friday 7 May after Ascension), this model does not guess those dates: check your employer’s posted replacement-day notice.',
+    noteFr: 'En Belgique, lorsqu’un des 10 jours fériés légaux tombe un dimanche ou un jour habituellement non travaillé (en 2027 : 1er mai, 15 août et 25 décembre), il doit être remplacé par un jour ouvrable fixé par l’entreprise ou la commission paritaire. Vérifiez l’avis affiché par votre employeur.',
+    focus: 'Ascension Day (Thursday 6 May 2027), Whit Monday (17 May), Belgian National Day (Wednesday 21 July) and Armistice Day (Thursday 11 November) anchor Belgium’s highest-value weekday combinations.',
+    focusFr: 'L’Ascension (jeudi 6 mai 2027), le lundi de Pentecôte (17 mai), la Fête nationale belge (mercredi 21 juillet) et l’Armistice (jeudi 11 novembre) constituent les meilleurs ponts en Belgique.'
   },
   CA: {
     name: 'Canada',
+    nameFr: 'Canada',
     key: 'CA',
     scope: 'Federal holiday calendar',
+    scopeFr: 'Calendrier fédéral',
     url: 'https://www.canada.ca/en/services/jobs/workplace/federal-labour-standards/vacations-holidays.html',
     authority: 'Government of Canada',
-    note: 'Provincial and territorial statutory holidays vary (for example Family Day, Civic Holiday, Boxing Day and St. Jean Baptiste Day). Use the subdivision selector in the planner to include provincial holidays.',
-    focus: 'Canada Day falls on Thursday 1 July 2027, National Day for Truth and Reconciliation on Thursday 30 September, Remembrance Day on Thursday 11 November, and the federal Christmas substitute day on Monday 27 December.'
+    note: 'Most Canadian employees are governed by provincial or territorial employment standards rather than the federal Canada Labour Code. Provincial statutory holidays differ (for example Family Day, Victoria Day, St. Jean Baptiste Day, Civic Holiday and Boxing Day). Select your province in the interactive planner for provincial rules.',
+    noteFr: 'La majorité des salariés canadiens relèvent des normes du travail provinciales et non du Code canadien du travail fédéral. Utilisez le sélecteur de province dans le planificateur pour inclure les jours fériés provinciaux.',
+    focus: 'Canada Day falls on Thursday 1 July 2027, National Day for Truth and Reconciliation on Thursday 30 September, Remembrance Day on Thursday 11 November, and the federal Christmas substitute day on Monday 27 December.',
+    focusFr: 'La Fête du Canada tombe le jeudi 1er juillet 2027, la Journée nationale de la vérité et de la réconciliation le jeudi 30 septembre, le Jour du Souvenir le jeudi 11 novembre et le congé fédéral de Noël observé le lundi 27 décembre.'
   },
   AU: {
     name: 'Australia',
+    nameFr: 'Australie',
     key: 'AU-NSW',
     scope: 'New South Wales & state calendars',
+    scopeFr: 'Nouvelle-Galles du Sud et États',
     url: 'https://www.fairwork.gov.au/employment-conditions/public-holidays',
     authority: 'Fair Work Ombudsman',
-    note: 'Australian public holidays are legislated at the state and territory level. These examples use New South Wales; dedicated guides for Victoria and Queensland are linked below and selectable in the planner.',
-    focus: 'Australia Day falls on Tuesday 26 January 2027 (a 4-day weekend for 1 leave day on Monday 25 January), Easter runs 26–29 March, and substitute days for Christmas and Boxing Day fall on Monday 27 and Tuesday 28 December 2027.'
+    note: 'Australian public holidays are declared at the state and territory level alongside the National Employment Standards (minimum 4 weeks paid annual leave for full-time workers). These examples use New South Wales; dedicated calendars for Victoria and Queensland are linked below and selectable in the planner.',
+    noteFr: 'Les jours fériés australiens sont fixés par chaque État et territoire (le minimum légal fédéral étant de 4 semaines de congés payés). Ces exemples utilisent la Nouvelle-Galles du Sud ; les calendriers du Victoria et du Queensland sont liés ci-dessous.',
+    focus: 'Australia Day falls on Tuesday 26 January 2027 (a 4-day weekend for 1 leave day on Monday 25 January), Easter runs 26–29 March, and substitute days for Christmas and Boxing Day fall on Monday 27 and Tuesday 28 December 2027.',
+    focusFr: 'Australia Day tombe le mardi 26 janvier 2027 (pont de 4 jours en posant le lundi 25 janvier), Pâques s’étend du 26 au 29 mars, et les jours de substitution pour Noël et Boxing Day tombent les lundi 27 et mardi 28 décembre 2027.'
   },
   SE: {
     name: 'Sweden',
+    nameFr: 'Suède',
     key: 'SE',
     scope: 'National public holidays',
+    scopeFr: 'Jours fériés nationaux',
     url: 'https://www.government.se/contentassets/eaf3467d4f484c9fb7274a067484c759/1977_480-annual-leave-act.pdf',
     authority: 'Government Offices of Sweden',
-    note: 'Many Swedish collective agreements grant half-days or de facto days off on Midsummer Eve, Christmas Eve and New Year’s Eve, plus “klämdagar” (squeeze days). Confirm your agreement before booking.',
-    focus: 'Epiphany falls on Wednesday 6 January 2027 (allowing a 9-day break for 4 leave days), Easter combines Good Friday and Easter Monday (26–29 March), and Ascension Day falls on Thursday 6 May.'
+    note: 'Sweden’s Annual Leave Act (Semesterlagen) provides at least 25 vacation days per year. Many collective agreements also treat Midsummer Eve, Christmas Eve and New Year’s Eve as de facto paid days off and grant “klämdagar” (squeeze days such as the Friday after Ascension). Check your collective agreement.',
+    noteFr: 'La loi suédoise sur les congés (Semesterlagen) prévoit au moins 25 jours de congés payés par an. De nombreuses conventions collectives accordent également les veilles de fête (Midsummer, 24 et 31 décembre) et des « klämdagar » (jours de pont).',
+    focus: 'Epiphany falls on Wednesday 6 January 2027 (allowing a 9-day break for 4 leave days), Easter combines Good Friday and Easter Monday (26–29 March), and Ascension Day falls on Thursday 6 May.',
+    focusFr: 'L’Épiphanie tombe le mercredi 6 janvier 2027 (9 jours de repos pour 4 jours posés), suivie de Pâques (26–29 mars) et de l’Ascension (jeudi 6 mai).'
   },
   NO: {
     name: 'Norway',
+    nameFr: 'Norvège',
     key: 'NO',
     scope: 'National public holidays',
+    scopeFr: 'Jours fériés nationaux',
     url: 'https://www.arbeidstilsynet.no/en/working-hours-and-organisation-of-work/holiday/',
     authority: 'Norwegian Labour Inspection Authority (Arbeidstilsynet)',
-    note: 'Norway’s statutory holiday law counts 25 working days including Saturdays (4 weeks + 1 day, or 5 weeks under most collective agreements). Maundy Thursday and Good Friday are both full public holidays.',
-    focus: 'Easter 2027 in Norway includes Maundy Thursday (25 March), Good Friday (26 March) and Easter Monday (29 March), turning 3 leave days (22–24 March) into 10 consecutive days off.'
+    note: 'Norway’s Holiday Act (Ferieloven) expresses statutory leave as 25 working days (virkedager) including Saturdays (= 4 weeks + 1 day, or ~21 Mon–Fri workdays), while most collective agreements grant 5 weeks (30 virkedager = 25 Mon–Fri workdays). Enter your 5-day-week equivalent in the planner.',
+    noteFr: 'La loi norvégienne (Ferieloven) exprime le congé légal en 25 jours ouvrables (samedis compris, soit 4 semaines + 1 jour), tandis que la plupart des conventions collectives accordent 5 semaines (25 jours sur une base Lun–Ven).',
+    focus: 'Easter 2027 in Norway includes Maundy Thursday (25 March), Good Friday (26 March) and Easter Monday (29 March), turning 3 leave days (22–24 March) into 10 consecutive days off, and Constitution Day + Whit Monday both fall on Monday 17 May 2027.',
+    focusFr: 'Pâques 2027 en Norvège inclut les jeudi saint (25 mars), vendredi saint (26 mars) et lundi de Pâques (29 mars), offrant 10 jours de repos pour 3 jours posés (22–24 mars).'
   },
   FI: {
     name: 'Finland',
+    nameFr: 'Finlande',
     key: 'FI',
     scope: 'National public holidays',
+    scopeFr: 'Jours fériés nationaux',
     url: 'https://www.suomi.fi/citizen/work-unemployment-and-finances/rules-of-working-life/guide/working-time-annual-holidays-and-time-off/earning-annual-holiday',
     authority: 'Suomi.fi',
-    note: 'Finnish collective agreements frequently treat Midsummer Eve and Christmas Eve as paid days off even where statutory rules differ, and annual leave accrual is often counted on a 6-day Mon–Sat basis.',
-    focus: 'Epiphany (Wednesday 6 January 2027), Easter (26–29 March), Ascension Day (Thursday 6 May) and Independence Day (Monday 6 December) create four high-leverage breaks across the Finnish calendar.'
+    note: 'Under Finland’s Annual Holidays Act, holiday accrual is counted in 6-day Mon–Sat working days (arkipäivä: up to 30 arkipäivää = 5 weeks / 25 Mon–Fri days after one year). Collective agreements frequently treat Midsummer Eve and Christmas Eve as paid days off. Enter your Mon–Fri workday equivalent in the planner.',
+    noteFr: 'En Finlande, les congés légaux sont décomptés sur 6 jours ouvrables du lundi au samedi (arkipäivä : 30 jours = 5 semaines, soit 25 jours du lundi au vendredi). Saisissez votre équivalent semaine de 5 jours dans le planificateur.',
+    focus: 'Epiphany (Wednesday 6 January 2027), Easter (26–29 March), Ascension Day (Thursday 6 May) and Independence Day (Monday 6 December) create four high-leverage breaks across the Finnish calendar.',
+    focusFr: 'L’Épiphanie (mercredi 6 janvier 2027), Pâques (26–29 mars), l’Ascension (jeudi 6 mai) et le Jour de l’Indépendance (lundi 6 décembre) offrent quatre fenêtres majeures en Finlande.'
   }
 };
 
 async function walkHtml(dir) {
   let out = [];
   for (const e of await fs.readdir(dir, { withFileTypes: true })) {
+    if (e.name === '.git' || e.name === 'functions' || e.name === 'scripts' || e.name === 'node_modules') continue;
     const p = path.join(dir, e.name);
     if (e.isDirectory()) out.push(...(await walkHtml(p)));
     else if (e.name.endsWith('.html')) out.push(p);
@@ -203,602 +244,57 @@ async function walkHtml(dir) {
   return out;
 }
 
-const esc = s => String(s).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
-const fmtDate = s => new Date(s + 'T12:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-const fmtWeekday = s => new Date(s + 'T12:00:00').toLocaleDateString('en-GB', { weekday: 'long' });
+const esc = s => String(s || '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
+const fmtDate = (s, lang = 'en') => new Date(s + 'T12:00:00').toLocaleDateString(lang === 'fr' ? 'fr-FR' : 'en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+const fmtWeekday = (s, lang = 'en') => new Date(s + 'T12:00:00').toLocaleDateString(lang === 'fr' ? 'fr-FR' : 'en-GB', { weekday: 'long' });
 const iso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
 async function main() {
-  console.log('1. Loading holiday data...');
+  console.log('1. Loading holiday & statutory leave data...');
   const data = JSON.parse(await fs.readFile(`${V12_SRC}/data/holidays-v12.json`, 'utf8'));
   const verifiedLeave = JSON.parse(await fs.readFile(`${V12_SRC}/data/leave-verified.json`, 'utf8'));
 
-  // Write holidays-v13.json
   await fs.writeFile(`${ROOT}/data/holidays-v13.json`, JSON.stringify(data));
 
-  console.log('2. Building assets/app-v13.js and assets/style-v13.css...');
-  const appV13 = `const HM={data:null,countries:[],subs:{},lang:'en',cache:{},lastTrips:[],lastPlan:null};
-const $=s=>document.querySelector(s);
-
-const ADSTERRA_CONFIG={
-  enabled:true,
-  domainId:6176073,
-  units:${JSON.stringify(ADSTERRA_UNITS)}
-};
-
-function iso(d){return \`\${d.getFullYear()}-\${String(d.getMonth()+1).padStart(2,'0')}-\${String(d.getDate()).padStart(2,'0')}\`}
-function addDays(d,n){const x=new Date(d);x.setDate(x.getDate()+n);return x}
-function getWorkPattern(){const el=$('#workPattern');return el?el.value:'mon-fri'}
-function isWeekend(d,pattern='mon-fri'){
-  const day=d.getDay();
-  if(pattern==='sun-thu')return day===5||day===6;
-  if(pattern==='mon-thu')return day===5||day===6||day===0;
-  if(pattern==='tue-sat')return day===0||day===1;
-  return day===0||day===6;
-}
-function fmt(d,withYear=false){return new Intl.DateTimeFormat(HM.lang==='fr'?'fr-FR':'en-GB',{weekday:'short',day:'numeric',month:'short',...(withYear?{year:'numeric'}:{})}).format(d)}
-function fmtEfficiency(n){return new Intl.NumberFormat(HM.lang==='fr'?'fr-FR':'en-GB',{minimumFractionDigits:2,maximumFractionDigits:2}).format(n)}
-function baseCode(code){return code.includes('-')?code.split('-')[0]:code}
-
-function setupLanguageSwitch(){
-  const links=[...document.querySelectorAll('.lang-switch a')];
-  if(!links.length)return;
-  const p=location.pathname||'/';
-  const tail=location.search+location.hash;
-  let en=p.startsWith('/fr/')?(p.slice(3)||'/'):p;
-  let fr=p.startsWith('/fr/')?p:('/fr'+(p==='/'?'/':p));
-  en=en.replace(/\\/{2,}/g,'/');
-  fr=fr.replace(/\\/{2,}/g,'/');
-  for(const a of links){
-    const t=a.textContent.trim().toUpperCase();
-    if(t==='EN')a.href=en+tail;
-    if(t==='FR')a.href=fr+tail;
-  }
-}
-
-function canonicalHolidayName(code,date,name){
-  const cc=baseCode(code),md=date.slice(5);
-  const fr=HM.lang==='fr';
-  const map={
-    DK:{'12-25':fr?'Jour de Noël':'Christmas Day','12-26':fr?'Deuxième jour de Noël':'Second Day of Christmas'},
-    GB:{'12-25':fr?'Jour de Noël':'Christmas Day','12-26':'Boxing Day'},
-    IE:{'12-25':fr?'Jour de Noël':'Christmas Day','12-26':fr?'Saint-Étienne':"St Stephen's Day"},
-    AU:{'12-26':'Boxing Day'},
-    NZ:{'12-26':'Boxing Day'},
-    CA:{'12-26':'Boxing Day'}
-  };
-  return map[cc]?.[md]||name;
-}
-
-async function apiHolidays(code,year){
-  let cc=baseCode(code),key=\`\${cc}-\${year}\`;
-  if(HM.cache[key])return HM.cache[key];
-  const storageKey=\`hm-holidays-v13-\${key}\`;
-  try{
-    const cached=localStorage.getItem(storageKey);
-    if(cached){
-      const parsed=JSON.parse(cached);
-      if(Array.isArray(parsed.items)&&Date.now()-parsed.saved<86400000){
-        HM.cache[key]=parsed.items;
-        return parsed.items;
-      }
-    }
-  }catch(e){}
-  try{
-    let r=await fetch(\`https://nagerholidays.com/api/v4/Holidays/\${cc}/\${year}\`,{signal:AbortSignal.timeout(8000)});
-    if(!r.ok)return [];
-    let a=await r.json();
-    HM.cache[key]=a;
-    try{localStorage.setItem(storageKey,JSON.stringify({saved:Date.now(),items:a}))}catch(e){}
-    return a;
-  }catch(e){return []}
-}
-
-function normalizeApi(a,region,code){
-  return a.filter(h=>(!h.holidayTypes||h.holidayTypes.includes('Public'))&&(region?(h.nationalHoliday||!h.subdivisionCodes||h.subdivisionCodes.includes(region)):h.nationalHoliday!==false)).map(h=>({date:h.date,name:canonicalHolidayName(code,h.date,h.name)}));
-}
-
-function optimize(hs,year,budget,minTrip,maxTrip,earliest=null,pattern='mon-fri'){
-  const hmap=new Map(hs.map(h=>[h.date,h.name]));
-  let cand=[],selectedStart=new Date(year,0,1),selectedEnd=new Date(year,11,31),start=new Date(year-1,11,1),lastStart=new Date(year,11,31),searchEnd=new Date(year+1,0,31);
-  for(let d=new Date(start);d<=lastStart;d=addDays(d,1)){
-    if(earliest&&d<earliest)continue;
-    for(let len=minTrip;len<=maxTrip;len++){
-      let e=addDays(d,len-1);
-      if(e>searchEnd)break;
-      if(e<selectedStart)continue;
-      let leave=0,hol=0,weekend=0,days=[];
-      for(let x=new Date(d);x<=e;x=addDays(x,1)){
-        let key=iso(x),type='work';
-        if(hmap.has(key)){type='holiday';hol++}
-        else if(isWeekend(x,pattern)){type='weekend';weekend++}
-        else leave++;
-        days.push({date:new Date(x),type,name:hmap.get(key)||''});
-      }
-      if(leave<1||leave>budget||hol<1)continue;
-      let crossesPrev=d<selectedStart,crossesNext=e>selectedEnd,eff=len/leave,boundaryBonus=(crossesPrev||crossesNext)?2.5:0;
-      let score=eff*12+len*.28+hol*.45-(leave/budget)*.15+boundaryBonus;
-      cand.push({start:new Date(d),end:e,leave,total:len,hol,weekend,efficiency:eff,score,days,crossesPrev,crossesNext});
-    }
-  }
-  cand.sort((a,b)=>b.score-a.score||b.total-a.total||a.leave-b.leave);
-  let out=[];
-  const overlaps=(a,b)=>Math.max(a.start,b.start)<=Math.min(a.end,b.end);
-  for(let c of cand){
-    if(!out.some(o=>overlaps(c,o)))out.push(c);
-    if(out.length>=10)break;
-  }
-  function ensureBoundary(flag){
-    let best=cand.find(c=>c[flag]);
-    if(!best||out.some(o=>o.start.getTime()===best.start.getTime()&&o.end.getTime()===best.end.getTime())||out.some(o=>overlaps(best,o)))return;
-    if(out.length>=10)out.pop();
-    out.push(best);
-  }
-  ensureBoundary('crossesPrev');
-  ensureBoundary('crossesNext');
-  out.sort((a,b)=>b.score-a.score||b.total-a.total||a.leave-b.leave);
-  return out.slice(0,10);
-}
-
-function buildAnnualPlan(trips,budget,year){
-  let inYear=trips.filter(t=>t.start.getFullYear()===year||t.end.getFullYear()===year);
-  let left=budget,picks=[];
-  const overlaps=(a,b)=>Math.max(a.start,b.start)<=Math.min(a.end,b.end);
-  for(let t of inYear){
-    if(t.leave<=left&&!picks.some(p=>overlaps(t,p))){
-      picks.push(t);
-      left-=t.leave;
-    }
-  }
-  const sortedPicks=[...picks].sort((a,b)=>a.start-b.start);
-  const usedLeave=budget-left;
-  const totalOff=sortedPicks.reduce((s,t)=>s+t.total,0);
-  const totalHol=sortedPicks.reduce((s,t)=>s+t.hol,0);
-  return {budget,usedLeave,left,totalOff,totalHol,picks:sortedPicks,multiplier:usedLeave>0?(totalOff/usedLeave):0};
-}
-
-function toIcsDate(d){
-  return \`\${d.getFullYear()}\${String(d.getMonth()+1).padStart(2,'0')}\${String(d.getDate()).padStart(2,'0')}\`;
-}
-
-function generateIcsContent(tripList,titlePrefix){
-  const lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//HolidayMaximizer.com//Annual Leave Planner//EN','CALSCALE:GREGORIAN','METHOD:PUBLISH'];
-  const stamp=new Date().toISOString().replace(/[-:]/g,'').replace(/\\.\\d{3}/,'');
-  tripList.forEach((t,idx)=>{
-    const dtStart=toIcsDate(t.start);
-    const dtEnd=toIcsDate(addDays(t.end,1));
-    const leaveDays=t.days.filter(x=>x.type==='work').map(x=>fmt(x.date,true)).join('; ');
-    const hols=[...new Set(t.days.filter(x=>x.type==='holiday').map(x=>x.name))].join(', ');
-    const summary=\`\${titlePrefix}: \${t.total} days off (\${t.leave} leave day\${t.leave===1?'':'s'})\`;
-    const desc=\`Book annual leave on: \${leaveDays}.\\nPublic holidays included: \${hols||'None'}.\\nEfficiency multiplier: \${t.efficiency.toFixed(2)}x.\\nPlanned via https://holidaymaximizer.com/\`;
-    lines.push(
-      'BEGIN:VEVENT',
-      \`UID:hm-\${dtStart}-\${dtEnd}-\${idx}@holidaymaximizer.com\`,
-      \`DTSTAMP:\${stamp}\`,
-      \`DTSTART;VALUE=DATE:\${dtStart}\`,
-      \`DTEND;VALUE=DATE:\${dtEnd}\`,
-      \`SUMMARY:\${summary.replace(/[,;]/g,'')}\`,
-      \`DESCRIPTION:\${desc}\`,
-      'END:VEVENT'
-    );
-  });
-  lines.push('END:VCALENDAR');
-  return lines.join('\\r\\n');
-}
-
-function downloadIcs(icsText,filename){
-  const blob=new Blob([icsText],{type:'text/calendar;charset=utf-8'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.href=url;
-  a.download=filename;
-  document.body.appendChild(a);
-  a.click();
-  setTimeout(()=>{a.remove();URL.revokeObjectURL(url)},200);
-}
-
-function renderAnnualPlanCard(plan,cn,year){
-  if(!plan||plan.picks.length<1)return '';
-  const fr=HM.lang==='fr';
-  return \`<aside class="annual-plan-card" aria-label="\${fr?'Plan annuel combiné':'Combined annual leave plan'}">
-    <div class="annual-plan-top">
-      <div>
-        <span class="eyebrow">✦ \${fr?'Plan annuel combiné sans chevauchement':'Combined non-overlapping annual plan'}</span>
-        <h4>\${plan.totalOff} \${fr?'jours de repos au total avec':'total days off using'} \${plan.usedLeave} \${fr?'jours posés sur':'of'} \${plan.budget} (\${plan.picks.length} \${fr?'séjours':'breaks'})</h4>
-        <p class="annual-plan-sub">\${fr?\`Il vous reste \${plan.left} jour(s) de congé libre(s) · \${plan.totalHol} jours fériés mobilisés\`:\`\${plan.left} leave day\${plan.left===1?'':'s'} still unallocated · \${plan.totalHol} public holidays leveraged\`}</p>
-      </div>
-      <div class="score">
-        <strong>\${fmtEfficiency(plan.multiplier)}×</strong>
-        <span>\${fr?'multiplicateur annuel':'combined multiplier'}</span>
-      </div>
-    </div>
-    <ul class="annual-plan-list">
-      \${plan.picks.map(t=>{
-        const L=t.days.filter(x=>x.type==='work');
-        return \`<li><strong>\${fmt(t.start,true)} → \${fmt(t.end,true)}</strong> (\${t.total} \${fr?'jours':'days off'}, \${t.leave} \${fr?'congés':'leave'}) — \${fr?'Poser :':'Book:'} \${L.map(x=>fmt(x.date)).join(', ')}</li>\`;
-      }).join('')}
-    </ul>
-    <div class="trip-actions">
-      <button type="button" class="chip-btn primary" data-action="export-plan-ics">📅 \${fr?'Exporter tout le plan (.ics)':'Export full-year plan (.ics)'}</button>
-      <button type="button" class="chip-btn" data-action="copy-plan">📋 \${fr?'Copier le résumé annuel':'Copy full-year summary'}</button>
-    </div>
-  </aside>\`;
-}
-
-function render(t,idx){
-  let L=t.days.filter(x=>x.type==='work'),hn=[...new Set(t.days.filter(x=>x.type==='holiday').map(x=>x.name))],crossYear=t.start.getFullYear()!==t.end.getFullYear(),boundary=t.crossesPrev?(HM.lang==='fr'?\`Commence en \${t.start.getFullYear()}\`:\`Starts in \${t.start.getFullYear()}\`):t.crossesNext?(HM.lang==='fr'?\`Continue en \${t.end.getFullYear()}\`:\`Continues into \${t.end.getFullYear()}\`):'',holidayLabel=hn.length<=3?hn.join(' + '):hn.slice(0,2).join(' + ')+\` + \${hn.length-2} \${HM.lang==='fr'?'autre'+(hn.length-2>1?'s':''):'more'}\`;
-  const fr=HM.lang==='fr';
-  return \`<article class="trip-card" data-trip-idx="\${idx}">
-    <div class="trip-top">
-      <div>
-        <div class="trip-title">\${t.total} \${fr?'jours de repos avec':'days off using'} \${t.leave} \${fr?'jour(s) de congé':'leave day'+(t.leave===1?'':'s')}</div>
-        <div class="trip-sub">\${fmt(t.start,true)} → \${fmt(t.end,true)}\${holidayLabel?' · '+holidayLabel:''}</div>
-      </div>
-      <div class="score">
-        <strong>\${fmtEfficiency(t.efficiency)}×</strong>
-        <span>\${fr?'multiplicateur':'days-off multiplier'}</span>
-      </div>
-    </div>
-    <div class="trip-metrics">
-      <span class="pill orange">\${fr?'Poser':'Book'} \${L.length}</span>
-      <span class="pill green">\${t.hol} \${fr?'jours fériés':'public holidays'}</span>
-      <span class="pill">\${t.weekend} \${fr?'jours de week-end':'weekend days'}</span>
-      \${boundary?\`<span class="pill">\${boundary}</span>\`:''}
-    </div>
-    <p class="book-dates"><strong>\${fr?'Jours à poser :':'Book these dates:'}</strong> \${L.map(x=>fmt(x.date,true)).join('; ')}</p>
-    <div class="trip-days">\${t.days.map(x=>\`<div class="date-chip \${x.type==='work'?'leave':x.type}" title="\${x.name||''}"><small>\${fmt(x.date).split(' ')[0]}</small><b>\${x.date.getDate()}</b><small>\${x.date.toLocaleString(fr?'fr-FR':'en-GB',{month:'short'})}</small>\${crossYear?\`<small class="chip-year">\${x.date.getFullYear()}</small>\`:''}</div>\`).join('')}</div>
-    <div class="trip-actions">
-      <button type="button" class="chip-btn" data-action="export-ics" data-idx="\${idx}">📅 \${fr?'Ajouter au calendrier (.ics)':'Add to calendar (.ics)'}</button>
-      <button type="button" class="chip-btn" data-action="copy-trip" data-idx="\${idx}">📋 \${fr?'Copier les dates':'Copy dates for HR'}</button>
-    </div>
-  </article>\`;
-}
-
-async function updateRegions(){
-  let c=$('#locale'),r=$('#region');
-  if(!c||!r)return;
-  let cc=baseCode(c.value);
-  let names=HM.subs[cc]||[];
-  let year=+($('#year')?.value||new Date().getFullYear());
-  let api=await apiHolidays(cc,year);
-  let used=new Set(api.flatMap(h=>h.subdivisionCodes||[]));
-  let local=Object.values(HM.data.locales).filter(x=>x.code.startsWith(cc+'-')).map(x=>({code:x.code,name:x.label.replace(/^.*?—\\s*/,''),local:true}));
-  let opts=[...local];
-  for(let x of names)if(used.has(x.code)&&!opts.some(o=>o.code===x.code))opts.push(x);
-  opts.sort((a,b)=>a.name.localeCompare(b.name));
-  let prev=new URLSearchParams(location.search).get('region')||'';
-  r.innerHTML=\`<option value="">\${HM.lang==='fr'?'National / toutes les régions':'National / all regions'}</option>\`+opts.map(x=>\`<option value="\${x.code}">\${x.name}</option>\`).join('');
-  r.disabled=!opts.length;
-  if(prev&&[...r.options].some(o=>o.value===prev))r.value=prev;
-}
-
-function ensureWorkPatternField(){
-  const form=$('#plannerForm');
-  if(!form||$('#workPattern'))return;
-  const fr=HM.lang==='fr';
-  const tripRangeField=$('#tripRange')?.closest('.field');
-  if(!tripRangeField)return;
-  const div=document.createElement('div');
-  div.className='field';
-  div.innerHTML=\`<label for="workPattern">\${fr?'Rythme de travail':'Workweek pattern'}</label>
-    <select id="workPattern">
-      <option value="mon-fri" selected>\${fr?'Lun–Ven (week-end Sam–Dim)':'Mon–Fri (Sat–Sun weekend)'}</option>
-      <option value="mon-thu">\${fr?'Semaine de 4 jours Lun–Jeu (Ven–Dim off)':'4-day week Mon–Thu (Fri–Sun off)'}</option>
-      <option value="sun-thu">\${fr?'Dim–Jeu (week-end Ven–Sam)':'Sun–Thu (Fri–Sat weekend)'}</option>
-      <option value="tue-sat">\${fr?'Mar–Sam (week-end Dim–Lun)':'Tue–Sat (Sun–Mon weekend)'}</option>
-    </select>\`;
-  tripRangeField.after(div);
-}
-
-async function populate(){
-  let loc=$('#locale');
-  if(!loc)return;
-  ensureWorkPatternField();
-  let p=new URLSearchParams(location.search),current=p.get('country')||loc.dataset.default||'DK';
-  let displayNames;
-  try{displayNames=new Intl.DisplayNames([HM.lang==='fr'?'fr':'en'],{type:'region'})}catch(e){}
-  let entries=HM.countries.map(x=>({code:x.code,label:(displayNames&&displayNames.of(x.code))||x.name}));
-  entries.sort((a,b)=>a.label.localeCompare(b.label,HM.lang==='fr'?'fr':'en'));
-  loc.innerHTML=entries.map(e=>\`<option value="\${e.code}">\${HM.lang==='en'&&e.code==='GB'?'UK':e.label}</option>\`).join('');
-  loc.value=baseCode(current);
-  if(!loc.value)loc.value='DK';
-  let y=$('#year'),now=new Date().getFullYear(),defaultYear=(new Date().getMonth()>=9)?now+1:now;
-  y.innerHTML=[0,1,2,3,4,5].map(n=>\`<option>\${now+n}</option>\`).join('');
-  y.value=p.get('year')||defaultYear;
-  if(!y.value)y.value=String(defaultYear);
-  let savedRange=p.get('range');
-  if(savedRange&&[...$('#tripRange').options].some(o=>o.value===savedRange))$('#tripRange').value=savedRange;
-  let savedPattern=p.get('pattern');
-  if(savedPattern&&$('#workPattern')&&[...$('#workPattern').options].some(o=>o.value===savedPattern))$('#workPattern').value=savedPattern;
-  $('#leave').value=p.get('leave')||20;
-  await updateRegions();
-  if(current.includes('-')&&$('#region')&&[...$('#region').options].some(o=>o.value===current)){
-    $('#region').value=current;
-  }
-}
-
-async function holidayList(code,region,year){
-  let localKey=region&&HM.data.holidays[region]?.[String(year)]?region:(!region&&HM.data.holidays[code]?.[String(year)]?code:null);
-  if(localKey)return{items:HM.data.holidays[localKey][String(year)].map(h=>({...h,name:canonicalHolidayName(code,h.date,h.name)})),localKey};
-  return{items:normalizeApi(await apiHolidays(code,year),region,code),localKey:null};
-}
-
-async function run(){
-  const results=$('#results');
-  if(!results)return;
-  results.setAttribute('aria-busy','true');
-  try{
-    let code=$('#locale').value,region=$('#region')?.value||'',year=+$('#year').value,budget=Math.min(90,Math.max(1,Math.floor(+$('#leave').value||1))),range=$('#tripRange').value.split('-').map(Number),min=range[0]||3,max=range[1]||30,pattern=getWorkPattern();
-    let[previous,current,next]=await Promise.all([holidayList(code,region,year-1),holidayList(code,region,year),holidayList(code,region,year+1)]);
-    let seen=new Map();
-    [...previous.items,...current.items,...next.items].forEach(h=>seen.set(h.date,h));
-    let hs=[...seen.values()];
-    let meta=HM.data.locales[current.localKey||code];
-    let note=$('#countryNote');
-    if(note)note.innerHTML=(meta?\`<strong>\${meta.label}:</strong> \${meta.note} \`:'')+(region?\`\${HM.lang==='fr'?'Calendrier régional sélectionné.':'Regional calendar selected.'} \`:'')+(note.dataset.note||'');
-    let today=new Date();today.setHours(0,0,0,0);
-    let trips=current.items.length?optimize(hs,year,budget,min,max,year===today.getFullYear()?today:null,pattern):[];
-    HM.lastTrips=trips;
-    HM.lastPlan=trips.length?buildAnnualPlan(trips,budget,year):null;
-    let cn=$('#locale').selectedOptions[0].text,rn=region&&$('#region').selectedOptions[0].text;
-    let labelTitle=\`\${cn}\${rn?' — '+rn:''} · \${year}\`;
-    $('#resultsTitle').textContent=labelTitle;
-    $('#resultsMeta').textContent=\`\${budget} \${HM.lang==='fr'?'jours de congé':'leave days'} · \${min}–\${max} \${HM.lang==='fr'?'jours':'day trips'} · \${HM.lang==='fr'?'options indépendantes + plan annuel combiné':'independent options + combined annual plan'}\`;
-    results.innerHTML=trips.length?(renderAnnualPlanCard(HM.lastPlan,cn,year)+trips.map((t,i)=>render(t,i)).join('')):\`<div class="empty"><strong>\${HM.lang==='fr'?'Aucune combinaison utile trouvée.':'No useful combination found.'}</strong> \${current.items.length?(HM.lang==='fr'?'Essayez une autre durée de voyage ou un autre budget de congés.':'Try another trip length or leave budget.'):(HM.lang==='fr'?'Aucune donnée de jour férié prise en charge n’a été renvoyée pour ce pays/cette année. Consultez le guide du pays et les sources officielles.':'No supported public-holiday data was returned for this country/year. Check the country guide and official sources.')}</div>\`;
-    let q=\`?country=\${code}&year=\${year}&leave=\${budget}&range=\${min}-\${max}\`+(region?\`&region=\${encodeURIComponent(region)}\`:'')+(pattern!=='mon-fri'?\`&pattern=\${pattern}\`:'');
-    history.replaceState(null,'',location.pathname+q);
-  }finally{
-    results.setAttribute('aria-busy','false');
-  }
-}
-
-function setupResultActions(){
-  const results=$('#results');
-  if(!results)return;
-  results.addEventListener('click',async(e)=>{
-    const btn=e.target.closest('button[data-action]');
-    if(!btn)return;
-    const action=btn.dataset.action;
-    const cn=$('#locale')?.selectedOptions?.[0]?.text||'HolidayMaximizer';
-    const year=$('#year')?.value||'2027';
-    if(action==='export-ics'){
-      const idx=+btn.dataset.idx;
-      const t=HM.lastTrips[idx];
-      if(!t)return;
-      const ics=generateIcsContent([t],\`\${cn} Leave Break\`);
-      downloadIcs(ics,\`holidaymaximizer-\${iso(t.start)}-to-\${iso(t.end)}.ics\`);
-    }else if(action==='export-plan-ics'){
-      if(!HM.lastPlan||!HM.lastPlan.picks.length)return;
-      const ics=generateIcsContent(HM.lastPlan.picks,\`\${cn} \${year} Leave Plan\`);
-      downloadIcs(ics,\`holidaymaximizer-\${cn.toLowerCase().replace(/[^a-z0-9]+/g,'-')}-\${year}-plan.ics\`);
-    }else if(action==='copy-trip'){
-      const idx=+btn.dataset.idx;
-      const t=HM.lastTrips[idx];
-      if(!t)return;
-      const L=t.days.filter(x=>x.type==='work').map(x=>fmt(x.date,true)).join('; ');
-      const txt=\`\${t.total} days off (\${fmt(t.start,true)} – \${fmt(t.end,true)}, \${t.efficiency.toFixed(2)}x value) using \${t.leave} leave day(s). Book: \${L}\`;
-      try{await navigator.clipboard.writeText(txt);}catch(_){}
-      const orig=btn.textContent;
-      btn.textContent=HM.lang==='fr'?'✓ Copié !':'✓ Copied!';
-      setTimeout(()=>{btn.textContent=orig},1800);
-    }else if(action==='copy-plan'){
-      if(!HM.lastPlan||!HM.lastPlan.picks.length)return;
-      const lines=HM.lastPlan.picks.map(t=>{
-        const L=t.days.filter(x=>x.type==='work').map(x=>fmt(x.date)).join(', ');
-        return \`• \${fmt(t.start,true)} – \${fmt(t.end,true)} (\${t.total} days off, \${t.leave} leave): Book \${L}\`;
-      });
-      const txt=\`\${cn} \${year} Annual Leave Plan (\${HM.lastPlan.totalOff} days off using \${HM.lastPlan.usedLeave}/\${HM.lastPlan.budget} leave days):\\n\`+lines.join('\\n');
-      try{await navigator.clipboard.writeText(txt);}catch(_){}
-      const orig=btn.textContent;
-      btn.textContent=HM.lang==='fr'?'✓ Copié !':'✓ Copied!';
-      setTimeout(()=>{btn.textContent=orig},1800);
-    }
-  });
-}
-
-function setupNav(){
-  const b=$('.menu-toggle'),n=$('.navlinks');
-  if(!b||!n)return;
-  b.addEventListener('click',()=>{
-    const open=n.classList.toggle('open');
-    b.setAttribute('aria-expanded',String(open));
-    b.textContent=open?(HM.lang==='fr'?'Fermer':'Close'):'Menu';
-  });
-  n.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
-    n.classList.remove('open');
-    b.setAttribute('aria-expanded','false');
-    b.textContent='Menu';
-  }));
-}
-
-function isEeaOrUkVisitor(){
-  try{
-    const params=new URLSearchParams(window.location.search);
-    if(params.get('eea')==='1')return true;
-    if(params.get('eea')==='0')return false;
-    const tz=Intl.DateTimeFormat().resolvedOptions().timeZone||'';
-    return tz.startsWith('Europe/')||tz==='Atlantic/Reykjavik'||tz==='Atlantic/Faroe'||tz==='Atlantic/Canary'||tz==='Atlantic/Madeira';
-  }catch(_){
-    return true;
-  }
-}
-
-function clearAdSlots(){
-  document.querySelectorAll('.ad-slot').forEach(slot=>{
-    slot.classList.remove('ad-active');
-    delete slot.dataset.adLoaded;
-    slot.innerHTML='';
-  });
-}
-
-function renderAdSlots(){
-  try{
-    if(!ADSTERRA_CONFIG.enabled){
-      clearAdSlots();
-      return;
-    }
-    const isMobile=window.innerWidth<768;
-    const fr=HM.lang==='fr';
-    const slots=document.querySelectorAll('.ad-slot[data-ad-slot]');
-    slots.forEach(slot=>{
-      if(slot.dataset.adLoaded==='1')return;
-      const slotId=slot.getAttribute('data-ad-slot');
-      let unit=null;
-      if(slotId==='M1'){
-        unit=ADSTERRA_CONFIG.units.rectangleBanner;
-      }else{
-        unit=isMobile?ADSTERRA_CONFIG.units.mobileBanner:ADSTERRA_CONFIG.units.desktopBanner;
-      }
-      if(!unit||!unit.key||!unit.scriptUrl){
-        slot.classList.remove('ad-active');
-        return;
-      }
-      slot.dataset.adLoaded='1';
-      const label=document.createElement('div');
-      label.className='ad-slot-label';
-      label.textContent=fr?'Publicité':'Advertisement';
-
-      const iframe=document.createElement('iframe');
-      iframe.className='adsterra-frame';
-      iframe.width=String(unit.width);
-      iframe.height=String(unit.height);
-      iframe.scrolling='no';
-      iframe.frameBorder='0';
-      iframe.title=fr?'Publicité':'Advertisement';
-      iframe.style.cssText=\`border:0;overflow:hidden;width:\${unit.width}px;height:\${unit.height}px;max-width:100%;display:block;margin:0 auto;\`;
-      iframe.srcdoc=\`<!doctype html><html><body style="margin:0;padding:0;background:transparent;overflow:hidden;"><script>atOptions={'key':'\${unit.key}','format':'iframe','height':\${unit.height},'width':\${unit.width},'params':{}};<\\/script><script src="\${unit.scriptUrl}" async onerror="window.parent.postMessage({type:'hm-ad-error',slot:'\${slotId}'},'*')"><\\/script></body></html>\`;
-
-      slot.innerHTML='';
-      slot.appendChild(label);
-      slot.appendChild(iframe);
-      slot.classList.add('ad-active');
-    });
-  }catch(_){
-    clearAdSlots();
-  }
-}
-
-if(typeof window!=='undefined'&&typeof document!=='undefined'){
-  window.addEventListener('message',(e)=>{
-    if(e&&e.data&&e.data.type==='hm-ad-error'&&e.data.slot){
-      const slot=document.querySelector(\`.ad-slot[data-ad-slot="\${e.data.slot}"]\`);
-      if(slot){
-        slot.classList.remove('ad-active');
-        slot.innerHTML='';
-      }
-    }
-  });
-}
-
-function initConsentAndAds(){
-  const STORAGE_KEY='hm_ad_consent';
-  let saved=null;
-  try{saved=localStorage.getItem(STORAGE_KEY);}catch(_){}
-  const fr=HM.lang==='fr';
-
-  function showConsentBanner(){
-    let banner=$('#consent-banner');
-    if(!banner){
-      banner=document.createElement('aside');
-      banner.id='consent-banner';
-      banner.className='consent-banner';
-      banner.setAttribute('role','region');
-      banner.setAttribute('aria-label',fr?'Préférences de confidentialité et de cookies':'Cookie and advertising preferences');
-      banner.innerHTML=\`
-        <div class="wrap consent-inner">
-          <p class="consent-text"><strong>\${fr?'Confidentialité et cookies :':'Privacy &amp; cookies:'}</strong> \${fr?'HolidayMaximizer fonctionne dans votre navigateur. Avec votre accord, notre partenaire publicitaire (Adsterra) peut utiliser des cookies pour afficher des bannières qui financent cet outil gratuit. Voir notre <a href="/fr/privacy/">Politique de confidentialité</a>.':'HolidayMaximizer runs in your browser. With your consent, our advertising partner (Adsterra) may use cookies and device data to show display banners that keep this planner free. See our <a href="/privacy/">Privacy Policy</a>.'}</p>
-          <div class="consent-actions">
-            <button type="button" class="btn consent-btn-accept" id="consent-accept">\${fr?'Accepter les cookies publicitaires':'Accept advertising cookies'}</button>
-            <button type="button" class="btn consent-btn-decline" id="consent-decline">\${fr?'Essentiels uniquement':'Essential only'}</button>
-          </div>
-        </div>
-      \`;
-      document.body.appendChild(banner);
-      $('#consent-accept')?.addEventListener('click',()=>{
-        try{localStorage.setItem(STORAGE_KEY,'granted');}catch(_){}
-        banner.remove();
-        renderAdSlots();
-      });
-      $('#consent-decline')?.addEventListener('click',()=>{
-        try{localStorage.setItem(STORAGE_KEY,'declined');}catch(_){}
-        banner.remove();
-        clearAdSlots();
-      });
-    }
-  }
-
-  document.querySelectorAll('[data-open-consent]').forEach(btn=>{
-    btn.addEventListener('click',(e)=>{
-      e.preventDefault();
-      showConsentBanner();
-    });
-  });
-
-  if(saved==='granted'){
-    renderAdSlots();
-  }else if(saved==='declined'){
-    clearAdSlots();
-  }else if(isEeaOrUkVisitor()){
-    showConsentBanner();
-  }else{
-    renderAdSlots();
-  }
-}
-
-document.addEventListener('DOMContentLoaded',async()=>{
-  HM.lang=document.documentElement.lang||'en';
-  setupNav();
-  setupLanguageSwitch();
-  initConsentAndAds();
-  if(!document.querySelector('#plannerForm'))return;
-  setupResultActions();
-  try{
-    let[d,c,s]=await Promise.all([
-      fetch('/data/holidays-v13.json').then(r=>r.json()),
-      fetch('/data/countries.json').then(r=>r.json()),
-      fetch('/data/subdivisions.json').then(r=>r.json())
-    ]);
-    HM.data=d;
-    HM.countries=c;
-    HM.subs=s;
-    await populate();
-    $('#locale')?.addEventListener('change',updateRegions);
-    $('#year')?.addEventListener('change',updateRegions);
-    $('#workPattern')?.addEventListener('change',run);
-    $('#plannerForm').addEventListener('submit',e=>{e.preventDefault();run()});
-    run();
-  }catch(e){
-    console.error(e);
-    const results=$('#results');
-    if(results){
-      results.setAttribute('aria-busy','false');
-      results.textContent=HM.lang==='fr'?'Impossible de charger le calendrier. Rechargez la page ou consultez les guides.':'The calendar could not load. Reload this page or use the dated country guides below.';
-    }
-  }
-});
-`;
-
+  console.log('2. Writing assets/app-v13.js and assets/style-v13.css...');
+  const appV13 = await fs.readFile(`${ROOT}/scripts/client_bundle_src.js`, 'utf8');
   await fs.writeFile(`${ROOT}/assets/app-v13.js`, appV13);
 
   const baseCss = await fs.readFile(`${V12_SRC}/assets/style-v12.css`, 'utf8');
   const v13CssExtra = `
-/* V13 Combined Annual Plan, Interactive Actions, Regional Switchers & Adsterra Slots */
-.annual-plan-card{background:linear-gradient(135deg,#eef7f0 0%,#ffffff 100%);border:2px solid #2b6b4f;border-radius:22px;padding:22px;margin-bottom:18px;box-shadow:0 12px 30px rgba(23,60,46,.08)}
+/* V13 Combined Annual Plan, Single-Break Separation, Reserved Ad Space & Responsive Consent */
+html,body{overflow-x:hidden;max-width:100%}
+body.has-consent-banner{padding-bottom:130px}
+.annual-plan-card{background:linear-gradient(135deg,#eef7f0 0%,#ffffff 100%);border:2px solid #2b6b4f;border-radius:22px;padding:22px;margin-bottom:22px;box-shadow:0 12px 30px rgba(23,60,46,.08)}
 .annual-plan-top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
 .annual-plan-card h4{font-size:21px;font-weight:900;letter-spacing:-.03em;margin:10px 0 4px;color:#173c2e}
 .annual-plan-sub{margin:0;font-size:13px;color:#4a5d52;font-weight:600}
 .annual-plan-list{margin:14px 0;padding-left:18px;font-size:14px;color:#24352c;line-height:1.65}
-.annual-plan-list li{margin-bottom:4px}
+.annual-plan-list li{margin-bottom:8px}
+.plan-meta-notes{background:#f5f9f6;border:1px solid #d5e2d8;border-radius:12px;padding:10px 14px;margin:12px 0;font-size:13px;color:#2b3d34;line-height:1.5}
+.plan-note-item{margin:4px 0}
+.single-breaks-header{margin:24px 0 12px;padding-top:16px;border-top:2px solid #dce5dd}
+.single-breaks-header h4{margin:0 0 4px;font-size:18px;font-weight:850;color:#173c2e}
+.single-breaks-header p{margin:0;font-size:13px;color:#4a5d52}
+.rest-holiday-note{margin:6px 0 10px;color:#5a6b60;font-size:12px}
 .trip-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;padding-top:12px;border-top:1px dashed #dce5dd}
-.chip-btn{border:1px solid #cdd8cf;background:#f7faf7;color:#173c2e;border-radius:10px;padding:7px 12px;font:inherit;font-size:12px;font-weight:750;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:6px}
+.chip-btn{border:1px solid #cdd8cf;background:#f7faf7;color:#173c2e;border-radius:10px;padding:7px 12px;font:inherit;font-size:12px;font-weight:750;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:6px;text-decoration:none}
 .chip-btn:hover{background:#e8f5ec;border-color:#9fc5ac}
 .chip-btn.primary{background:#173c2e;color:#fff;border-color:#173c2e}
 .chip-btn.primary:hover{background:#215440}
+.chip-btn.referral-link{background:#fff8f3;border-color:#f0cbb4;color:#7a3410}
+.chip-btn.referral-link:hover{background:#ffefe5}
+.hr-summary-box{margin-top:12px;border-top:1px solid #dce5dd;padding-top:10px;font-size:13px}
+.hr-summary-box summary{cursor:pointer;font-weight:750;color:#173c2e}
+.hr-summary-pre{background:#fff;border:1px solid #d5e0d7;border-radius:10px;padding:12px;margin-top:8px;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;line-height:1.5;color:#1e2d24}
 .year-pills{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0}
 .year-pills a{padding:9px 15px;border-radius:999px;background:#fff;border:1px solid #d5e0d7;text-decoration:none;font-weight:800;font-size:13px;color:#2b3d34;transition:.15s}
 .year-pills a:hover,.year-pills a.active{background:#173c2e;color:#fff;border-color:#173c2e}
-.ad-slot{display:none;margin:24px auto;text-align:center;max-width:100%;overflow:hidden}
+.ad-slot{display:none;margin:24px auto;text-align:center;max-width:100%;overflow:hidden;box-sizing:border-box}
 .ad-slot.ad-active{display:block;padding:10px 0}
+.ad-slot.ad-active.ad-size-728{min-height:116px}
+.ad-slot.ad-active.ad-size-320{min-height:76px}
+.ad-slot.ad-active.ad-size-300{min-height:276px}
 .ad-slot-label{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#76837b;margin-bottom:6px;font-weight:700}
 .consent-banner{position:fixed;bottom:0;left:0;right:0;z-index:99;background:#173c2e;color:#fff;border-top:2px solid #2e6950;padding:16px 0;box-shadow:0 -12px 32px rgba(0,0,0,.22)}
 .consent-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
@@ -807,140 +303,148 @@ document.addEventListener('DOMContentLoaded',async()=>{
 .consent-actions{display:flex;gap:10px;flex-wrap:wrap;flex:0 0 auto}
 .consent-btn-accept{width:auto;min-height:40px;padding:9px 16px;font-size:13px;background:#f1783e}
 .consent-btn-decline{width:auto;min-height:40px;padding:9px 16px;font-size:13px;background:transparent;border:1px solid #8ab09d;box-shadow:none}
-html,body{overflow-x:hidden;max-width:100%}
 @media(max-width:600px){.annual-plan-top{display:block}.consent-inner{flex-direction:column;align-items:stretch}.consent-actions button{width:100%}}
 @media(max-width:380px){.wrap{padding:0 12px}.ad-slot{margin:16px -12px}}
 `;
   await fs.writeFile(`${ROOT}/assets/style-v13.css`, baseCss + v13CssExtra);
 
-  // Create VM context to run the exact optimizer for static worked guides
+  // Create VM context to execute the exact optimizer and annual plan builder for static guides
   const ctx = vm.createContext({
     document: { addEventListener() {}, querySelector() { return null; }, querySelectorAll() { return []; } },
-    window: { addEventListener() {}, location: { search: '' }, innerWidth: 1280 },
+    window: { addEventListener() {}, location: { search: '', href: 'https://holidaymaximizer.com/' }, innerWidth: 1280 },
     localStorage: { getItem() { return null; }, setItem() {} },
     navigator: {},
+    location: { search: '', pathname: '/', protocol: 'https:' },
     console,
     Intl,
     Date,
     Map,
     Set,
-    URLSearchParams
+    URL,
+    URLSearchParams,
+    Float64Array,
+    Uint8Array
   });
   vm.runInContext(appV13, ctx);
 
-  function calcTrips(localKey, year, budget = 20, min = 3, max = 16) {
-    const a = [year - 1, year, year + 1].flatMap(y => data.holidays[localKey]?.[String(y)] || []);
-    return ctx.optimize(a, year, budget, min, max);
+  function getCombinedHolidays(localKey, year) {
+    return [year - 1, year, year + 1].flatMap(y => data.holidays[localKey]?.[String(y)] || []);
   }
 
-  function renderStaticTripCard(t) {
-    const leaveDates = t.days.filter(x => x.type === 'work').map(x => fmtDate(iso(x.date))).join('; ');
-    const usedHols = t.days.filter(x => x.type === 'holiday').map(x => `${esc(x.name)} (${fmtDate(iso(x.date))})`).join('; ');
+  function calcTrips(localKey, year, budget = 20, min = 3, max = 16, lang = 'en') {
+    ctx.window.HM.lang = lang;
+    return ctx.optimize(getCombinedHolidays(localKey, year), year, budget, min, max, null, 'mon-fri');
+  }
+
+  function calcAnnualPlan(localKey, year, budget = 20, lang = 'en') {
+    ctx.window.HM.lang = lang;
+    return ctx.buildAnnualPlan(getCombinedHolidays(localKey, year), year, budget, null, 'mon-fri');
+  }
+
+  function renderStaticTripCard(t, lang = 'en') {
+    const fr = lang === 'fr';
+    const leaveDates = t.days.filter(x => x.type === 'work').map(x => fmtDate(iso(x.date), lang)).join('; ');
+    const usedHols = t.days.filter(x => x.type === 'holiday').map(x => `${esc(x.name)} (${fmtDate(iso(x.date), lang)})`).join('; ');
+    const retDate = t.returnDate ? fmtDate(iso(t.returnDate), lang) : '';
+    const yearSplit = Object.entries(t.leaveByYear || {}).map(([y, c]) => `${c} ${fr ? 'en' : 'in'} ${y}`).join(' + ');
+    const hasCrossYearLeave = Object.keys(t.leaveByYear || {}).length > 1 || t.crossesPrev || t.crossesNext;
     return `<article class="trip-card">
       <div class="trip-top">
         <div>
-          <h3>${t.leave} leave ${t.leave === 1 ? 'day' : 'days'} → ${t.total} consecutive days off</h3>
-          <p class="trip-sub"><strong>${fmtDate(iso(t.start))} – ${fmtDate(iso(t.end))}</strong></p>
+          <h3>${t.leave} ${fr ? `jour${t.leave === 1 ? '' : 's'} posé${t.leave === 1 ? '' : 's'} → ${t.total} jours de repos consécutifs` : `leave ${t.leave === 1 ? 'day' : 'days'} → ${t.total} consecutive days off`}</h3>
+          <p class="trip-sub"><strong>${fmtDate(iso(t.start), lang)} – ${fmtDate(iso(t.end), lang)}</strong></p>
         </div>
-        <div class="score"><strong>${t.efficiency.toFixed(2)}×</strong><span>multiplier</span></div>
+        <div class="score"><strong>${t.efficiency.toFixed(2)}×</strong><span>${fr ? 'multiplicateur' : 'multiplier'}</span></div>
       </div>
       <div class="trip-metrics">
-        <span class="pill orange">Book ${t.leave} leave ${t.leave === 1 ? 'day' : 'days'}</span>
-        <span class="pill green">${t.hol} public ${t.hol === 1 ? 'holiday' : 'holidays'}</span>
-        <span class="pill">${t.weekend} weekend days</span>
+        <span class="pill orange">${fr ? `Poser ${t.leave} jour${t.leave === 1 ? '' : 's'}` : `Book ${t.leave} leave ${t.leave === 1 ? 'day' : 'days'}`}</span>
+        <span class="pill green">${t.hol} ${fr ? `jour${t.hol === 1 ? '' : 's'} férié${t.hol === 1 ? '' : 's'} ouvré${t.hol === 1 ? '' : 's'}` : `workday public ${t.hol === 1 ? 'holiday' : 'holidays'}`}</span>
+        <span class="pill">${t.weekend} ${fr ? 'jours de week-end (Sam–Dim)' : 'weekend days (Sat–Sun)'}</span>
+        ${hasCrossYearLeave ? `<span class="pill">${fr ? `Exercice : ${yearSplit}` : `Leave year: ${yearSplit}`}</span>` : ''}
       </div>
-      <p class="book-dates"><strong>Request leave:</strong> ${leaveDates}.</p>
-      <p><strong>Holidays used:</strong> ${usedHols}.</p>
+      <p class="book-dates"><strong>${fr ? 'Jours ouvrés à poser :' : 'Request leave on:'}</strong> ${leaveDates}.${retDate ? ` <strong>${fr ? 'Reprise du travail :' : 'Return to work:'}</strong> ${retDate}.` : ''}</p>
+      <p><strong>${fr ? 'Jours fériés utilisés :' : 'Holidays used:'}</strong> ${usedHols}.</p>
     </article>`;
   }
 
-  console.log('3. Generating 15 Flagship Country Worked Guides (/country/<iso2>/)...');
+  console.log('3. Generating 15 Flagship Country Worked Guides in BOTH EN (/country/<iso2>/) and FR (/fr/country/<iso2>/)...');
   for (const [cc, v] of Object.entries(FLAGSHIP_CFG)) {
-    const f = `${ROOT}/country/${cc.toLowerCase()}/index.html`;
-    let h = await fs.readFile(f, 'utf8');
-
     const lv = verifiedLeave[cc];
-    const entitlementText = lv ? lv.display : 'See the official national employment authority';
-    const authorityBox = lv && lv.url
-      ? `<div class="sourcebox"><strong>Official employment source:</strong> ${esc(lv.source || v.authority)}. <a class="official-link" href="${esc(lv.url)}" rel="nofollow noopener" target="_blank">Open official guidance ↗</a></div>`
-      : '';
-
-    const best = [[3, 5], [6, 9], [10, 16]].flatMap(([min, max]) =>
-      calcTrips(v.key, 2027, 20, min, max).filter(t => t.start.getFullYear() === 2027 && t.end.getFullYear() === 2027).slice(0, 1)
+    const bestEn = [[3, 5], [6, 9], [10, 16]].flatMap(([min, max]) =>
+      calcTrips(v.key, 2027, 20, min, max, 'en').filter(t => t.start.getFullYear() === 2027 && t.end.getFullYear() === 2027).slice(0, 1)
     );
-    const yearEnd = calcTrips(v.key, 2027, 10, 6, 16).filter(t => t.start.getMonth() === 11 && t.start.getFullYear() === 2027)[0];
-    const annual = [];
-    for (const budget of [10, 20]) {
-      let left = budget, picks = [];
-      const overlaps = (a, b) => Math.max(a.start, b.start) <= Math.min(a.end, b.end);
-      for (const t of calcTrips(v.key, 2027, budget, 6, 16).filter(t => t.start.getFullYear() === 2027 && t.end.getFullYear() === 2027)) {
-        if (t.leave <= left && !picks.some(p => overlaps(t, p))) {
-          picks.push(t);
-          left -= t.leave;
-        }
-      }
-      annual.push({ budget, left, picks });
-    }
+    const yearEndEn = calcTrips(v.key, 2027, 10, 6, 16, 'en').filter(t => t.start.getMonth() === 11 && t.start.getFullYear() === 2027)[0];
+    const annualEn = [10, 20].map(budget => calcAnnualPlan(v.key, 2027, budget, 'en'));
 
-    // Find related regional/year slugs for this country
     const relatedRegions = Object.entries(REGION_SLUGS).filter(([k]) => k === cc || k.startsWith(cc + '-'));
-    const regionalLinksHtml = relatedRegions.length
-      ? `<h2>Multi-year &amp; regional calendars (2026–2031)</h2>
-         <p>Explore year-by-year holiday tables and leave combinations for ${v.name}:</p>
-         <div class="featured-guides">
-           ${relatedRegions.flatMap(([k, slug]) => {
-             const regLabel = data.locales[k]?.label || v.name;
-             return [2026, 2027, 2028].map(yr => `<a href="/${slug}/${yr}/">${esc(regLabel)} (${yr})</a>`);
-           }).join('')}
-         </div>`
-      : '';
+    const plannerLinkEn = `/?country=${cc}&amp;year=2027&amp;leave=20&amp;range=3-30${v.key.includes('-') ? '&amp;region=' + v.key : ''}#planner`;
+    const plannerLinkFr = `/fr/?country=${cc}&amp;year=2027&amp;leave=20&amp;range=3-30${v.key.includes('-') ? '&amp;region=' + v.key : ''}#planner`;
 
-    const plannerLink = `/?country=${cc}&amp;year=2027&amp;leave=20&amp;range=3-30${v.key.includes('-') ? '&amp;region=' + v.key : ''}#planner`;
+    // 3a. English Flagship Guide (/country/<cc>/)
+    {
+      const f = `${ROOT}/country/${cc.toLowerCase()}/index.html`;
+      let h = await fs.readFile(f, 'utf8');
+      const entitlementText = lv ? lv.display : 'See the official national employment authority';
+      const authorityBox = lv && lv.url
+        ? `<div class="sourcebox"><strong>Official statutory leave source:</strong> ${esc(lv.source || v.authority)}. <a class="official-link" href="${esc(lv.url)}" rel="nofollow noopener" target="_blank">Open official guidance ↗</a></div>`
+        : '';
+      const regionalLinksHtml = relatedRegions.length
+        ? `<h2>Regional &amp; multi-year calendars (2026–2027)</h2>
+           <p>Compare active and upcoming year holiday tables and worked date combinations for ${v.name}:</p>
+           <div class="featured-guides">
+             ${relatedRegions.flatMap(([k, slug]) => {
+               const regLabel = data.locales[k]?.label || v.name;
+               return [2026, 2027].map(yr => `<a href="/${slug}/${yr}/">${esc(regLabel)} (${yr})</a>`);
+             }).join('')}
+           </div>`
+        : '';
 
-    const mainHtml = `<main id="main-content">
+      const mainHtml = `<main id="main-content">
       <section class="country-hero">
         <div class="wrap">
           <nav aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/countries/">Countries</a> / ${v.name}</nav>
           <p class="eyebrow">2027 leave planning · ${esc(v.scope)}</p>
           <h1>${v.name}: make your 2027 leave go further</h1>
-          <p class="section-intro">Exact dates to book, the holidays behind each result, and full-year schedule examples for your leave allowance.</p>
+          <p class="section-intro">Exact workdays to book, the public holidays behind each result, and non-overlapping 10-day and 20-day annual schedule plans.</p>
           <p>${esc(v.focus)}</p>
-          <div class="country-note"><strong>Before using these dates:</strong> ${esc(v.note)}</div>
-          <p><a class="btn" href="${plannerLink}">Open ${v.name} in the interactive planner →</a></p>
-          <p class="method-note">Calculations verified ${TODAY}. Saturday–Sunday weekends; all listed calendar holidays assumed off. Examples use the same ranking calculation as the interactive planner.</p>
+          <div class="country-note"><strong>Statutory leave, public holidays &amp; local rules:</strong> ${esc(v.note)}</div>
+          <p><a class="btn" href="${plannerLinkEn}">Customize ${v.name} in the interactive planner →</a></p>
+          <p class="method-note">Calculations verified ${TODAY}. Default examples below assume a Monday–Friday workweek (Saturday–Sunday rest days) and that listed public holidays are non-working days; use the interactive planner to switch to a 4-day Mon–Thu, Sun–Thu or Tue–Sat workweek.</p>
         </div>
       </section>
-      <div class="wrap"><div class="ad-slot" data-ad-slot="H1"></div></div>
       <section class="section guide-section">
         <div class="wrap">
-          <h2>Three high-value breaks in 2027</h2>
-          <p>Compare a long weekend (3–5 days), a one-week break (6–9 days) and an extended trip (10–16 days). Each option is ranked by total days off per leave day used.</p>
-          ${best.map(renderStaticTripCard).join('')}
+          <h2>Three high-value single breaks in 2027</h2>
+          <p>Compare a standalone long weekend (3–5 days), a one-week break (6–9 days) and an extended break (10–16 days). Each card is an independent single-break option ranked by total days off per leave day booked.</p>
+          ${bestEn.map(t => renderStaticTripCard(t, 'en')).join('')}
           <h2>Christmas and New Year 2027/2028</h2>
-          ${yearEnd ? renderStaticTripCard(yearEnd) : '<p>No holiday-assisted 6–16 day year-end break was returned within a ten-day leave allowance. Try a different trip length in the planner.</p>'}
-          <p>For a break crossing years, count leave against the correct employer leave year and check the next year’s calendar.</p>
-          <div class="ad-slot" data-ad-slot="M1"></div>
-          <h2>Ways to use a 10-day or 20-day allowance</h2>
-          <p>The sample schedules below combine non-overlapping 6–16 day breaks from the planner, taking the highest-ranked affordable options in order.</p>
-          ${annual.map(a => `<article class="trip-card">
-            <h3>${a.budget} leave days available</h3>
-            <p><strong>${a.budget - a.left} leave days used · ${a.picks.reduce((s, t) => s + t.total, 0)} days off across ${a.picks.length} breaks · ${a.left} leave days remaining.</strong></p>
-            <ul>${a.picks.map(t => `<li><strong>${fmtDate(iso(t.start))} – ${fmtDate(iso(t.end))}</strong>: ${t.total} days off using ${t.leave} leave days. Book ${t.days.filter(x => x.type === 'work').map(x => fmtDate(iso(x.date))).join(', ')}.</li>`).join('')}</ul>
-            <a href="/?country=${cc}&amp;year=2027&amp;leave=${a.budget}&amp;range=6-9${v.key.includes('-') ? '&amp;region=' + v.key : ''}#planner">Customize this ${a.budget}-day allowance in the planner →</a>
+          ${yearEndEn ? renderStaticTripCard(yearEndEn, 'en') : '<p>No holiday-assisted 6–16 day year-end break was returned within a ten-day leave allowance because the relevant holidays fall on weekends. Try another range in the planner.</p>'}
+          <p><strong>Leave-year boundary rule:</strong> When a December/January break crosses calendar years, check whether your employer deducts January workdays from your 2027 carry-over or your 2028 leave allowance.</p>
+          <div class="ad-slot" data-ad-slot="H1"></div>
+          <h2>Full-year non-overlapping schedules: 10-day vs. 20-day allowance</h2>
+          <p>Unlike the standalone single-break alternatives above, the schedules below optimize a combined, non-overlapping full-year plan across 2027 for a <strong>10-day</strong> versus a <strong>20-day</strong> bookable leave allowance.</p>
+          ${annualEn.map(plan => `<article class="trip-card">
+            <h3>${plan.budget}-day leave allowance → ${plan.totalOff} total days off (${plan.multiplier.toFixed(2)}× combined multiplier)</h3>
+            <p><strong>${plan.usedLeave} of ${plan.budget} leave days used across ${plan.picks.length} non-overlapping breaks · ${plan.left} leave day${plan.left === 1 ? '' : 's'} unused · ${plan.totalHol} workday public holidays leveraged.</strong></p>
+            <ul>${plan.picks.map(t => `<li><strong>${fmtDate(iso(t.start), 'en')} – ${fmtDate(iso(t.end), 'en')}</strong> (${t.total} days off using ${t.leave} leave day${t.leave === 1 ? '' : 's'}): Book <strong>${t.days.filter(x => x.type === 'work').map(x => fmtDate(iso(x.date), 'en')).join('; ')}</strong>.${t.returnDate ? ` Return to work: ${fmtDate(iso(t.returnDate), 'en')}.` : ''}</li>`).join('')}</ul>
+            <p><strong>Unused allowance:</strong> ${esc(plan.unusedReason)}</p>
+            <p><small>${esc(plan.boundaryNote)}</small></p>
+            <a href="/?country=${cc}&amp;year=2027&amp;leave=${plan.budget}&amp;range=6-9${v.key.includes('-') ? '&amp;region=' + v.key : ''}#planner">Open this ${plan.budget}-day schedule in the planner (export .ics or copy HR summary) →</a>
           </article>`).join('')}
+          <div class="ad-slot" data-ad-slot="M1"></div>
           <h2>2027 public holiday dates used in this calculation</h2>
-          <p>This is the model’s calendar for ${esc(v.scope.toLowerCase())}. Sundays already treated as weekends may be omitted. Employer replacement days and local exceptions are not silently added.</p>
+          <p>This table lists the ${data.holidays[v.key]['2027'].length} public holidays in the model’s 2027 calendar for ${esc(v.scope.toLowerCase())}. Bank closures, employer-specific days and unannounced replacement days are not silently added.</p>
           <div class="table-scroll">
             <table class="calendar-table">
-              <caption>${v.name} · 2027 public holidays &amp; weekday savings</caption>
-              <thead><tr><th scope="col">Date</th><th scope="col">Day</th><th scope="col">Holiday</th><th scope="col">Weekday saved?</th></tr></thead>
-              <tbody>${data.holidays[v.key]['2027'].map(x => `<tr><td>${fmtDate(x.date)}</td><td>${fmtWeekday(x.date)}</td><td>${esc(x.name)}</td><td>${[0, 6].includes(new Date(x.date + 'T12:00:00').getDay()) ? 'No — weekend' : 'Yes, if off work'}</td></tr>`).join('')}</tbody>
+              <caption>${v.name} · 2027 public holidays &amp; Mon–Fri workday impact</caption>
+              <thead><tr><th scope="col">Date</th><th scope="col">Day</th><th scope="col">Holiday</th><th scope="col">Saves a Mon–Fri workday?</th></tr></thead>
+              <tbody>${data.holidays[v.key]['2027'].map(x => `<tr><td>${fmtDate(x.date, 'en')}</td><td>${fmtWeekday(x.date, 'en')}</td><td>${esc(x.name)}</td><td>${[0, 6].includes(new Date(x.date + 'T12:00:00').getDay()) ? 'No — falls on weekend (unless replacement day applies)' : 'Yes — weekday (if a non-working day under your contract)'}</td></tr>`).join('')}</tbody>
             </table>
           </div>
-          <p>Calendar reference: <a href="${v.url}" rel="noopener" target="_blank">${esc(v.authority)} ↗</a>${v.extra ? ` · <a href="${v.extra}" rel="noopener" target="_blank">Law establishing the 4 October holiday ↗</a>` : ''}.</p>
+          <p>Official calendar source: <a href="${v.url}" rel="noopener" target="_blank">${esc(v.authority)} ↗</a>${v.extra ? ` · <a href="${v.extra}" rel="noopener" target="_blank">Law 151/2025 establishing 4 October holiday ↗</a>` : ''}.</p>
           ${regionalLinksHtml}
-          <h2>Annual leave entitlement and local rules</h2>
-          <p><strong>Statutory baseline:</strong> ${esc(entitlementText)}. The statutory minimum is context; enter your actual remaining bookable allowance in the planner.</p>
+          <h2>Statutory leave vs. public holidays, bank closures &amp; replacement days</h2>
+          <p><strong>Statutory paid annual leave baseline:</strong> ${esc(entitlementText)}. Statutory annual leave is distinct from public holidays: public holidays are calendar dates designated by law or collective agreement, whereas annual leave is your personal bookable allowance.</p>
           ${authorityBox}
           <p>${esc(v.note)}</p>
           <p><a href="/how-it-works/">Read the calculation methodology</a> · <a href="/compare/">Compare ${v.name} with another country</a> · <a href="/ranking/">Global annual-leave ranking</a></p>
@@ -949,34 +453,118 @@ html,body{overflow-x:hidden;max-width:100%}
       <div class="wrap"><div class="ad-slot" data-ad-slot="B1"></div></div>
     </main>`;
 
-    // Remove noindex from flagship country guides (for CA, AU, SE, NO, FI which were previously noindexed)
-    h = h.replace(/<meta[^>]*name="robots"[^>]*>/g, '');
-    h = h.replace(/<main[^>]*>[\s\S]*?<\/main>/, mainHtml);
-    h = h.replace(/<title>.*?<\/title>/, `<title>${v.name} 2027 Annual Leave Planner: Best Dates &amp; Public Holidays | HolidayMaximizer</title>`);
-    h = h.replace(/<meta[^>]*name="description"[^>]*>/, `<meta name="description" content="Maximize your ${v.name} annual leave in 2027: exact workdays to book, public holiday calendar, high-value bridge breaks and 10-day / 20-day schedule examples."/>`);
-    h = h.replace(/<link[^>]*hreflang="fr"[^>]*>/g, '');
-    await fs.writeFile(f, h);
+      h = h.replace(/<meta[^>]*name="robots"[^>]*>/g, '');
+      h = h.replace(/<link[^>]*hreflang=[^>]*>/g, '');
+      h = h.replace(
+        /(<link[^>]*rel="canonical"[^>]*>)/i,
+        `$1<link rel="alternate" hreflang="en" href="https://holidaymaximizer.com/country/${cc.toLowerCase()}/"/><link rel="alternate" hreflang="fr" href="https://holidaymaximizer.com/fr/country/${cc.toLowerCase()}/"/><link rel="alternate" hreflang="x-default" href="https://holidaymaximizer.com/country/${cc.toLowerCase()}/"/>`
+      );
+      h = h.replace(/<main[^>]*>[\s\S]*?<\/main>/, mainHtml);
+      h = h.replace(/<title>.*?<\/title>/, `<title>${v.name} 2027 Annual Leave Planner: Best Dates &amp; Public Holidays | HolidayMaximizer</title>`);
+      h = h.replace(/<meta[^>]*name="description"[^>]*>/, `<meta name="description" content="Maximize your ${v.name} annual leave in 2027: exact workdays to book, public holiday calendar, high-value bridge breaks and 10-day vs 20-day non-overlapping schedules."/>`);
+      await fs.writeFile(f, h);
+    }
+
+    // 3b. French Flagship Guide (/fr/country/<cc>/)
+    {
+      const fFr = `${ROOT}/fr/country/${cc.toLowerCase()}/index.html`;
+      let hf = await fs.readFile(fFr, 'utf8');
+      const bestFr = [[3, 5], [6, 9], [10, 16]].flatMap(([min, max]) =>
+        calcTrips(v.key, 2027, 20, min, max, 'fr').filter(t => t.start.getFullYear() === 2027 && t.end.getFullYear() === 2027).slice(0, 1)
+      );
+      const yearEndFr = calcTrips(v.key, 2027, 10, 6, 16, 'fr').filter(t => t.start.getMonth() === 11 && t.start.getFullYear() === 2027)[0];
+      const annualFr = [10, 20].map(budget => calcAnnualPlan(v.key, 2027, budget, 'fr'));
+      const entitlementFr = lv ? (lv.display_fr || lv.display) : 'Consultez l’autorité nationale du travail';
+      const authorityBoxFr = lv && lv.url
+        ? `<div class="sourcebox"><strong>Source officielle sur les congés :</strong> ${esc(lv.source || v.authority)}. <a class="official-link" href="${esc(lv.url)}" rel="nofollow noopener" target="_blank">Ouvrir la source officielle ↗</a></div>`
+        : '';
+
+      const mainHtmlFr = `<main id="main-content">
+      <section class="country-hero">
+        <div class="wrap">
+          <nav aria-label="Fil d’Ariane"><a href="/fr/">Accueil</a> / <a href="/fr/countries/">Pays</a> / ${v.nameFr}</nav>
+          <p class="eyebrow">Planification des congés 2027 · ${esc(v.scopeFr)}</p>
+          <h1>${v.nameFr} : optimiser vos congés annuels en 2027</h1>
+          <p class="section-intro">Jours ouvrés exacts à poser, calendrier des jours fériés 2027 et plannings annuels complets sans chevauchement pour un budget de 10 ou 20 jours.</p>
+          <p>${esc(v.focusFr)}</p>
+          <div class="country-note"><strong>Congé légal, jours fériés et règles locales :</strong> ${esc(v.noteFr)}</div>
+          <p><a class="btn" href="${plannerLinkFr}">Personnaliser ${v.nameFr} dans le planificateur interactif →</a></p>
+          <p class="method-note">Calculs vérifiés le ${TODAY}. Ces exemples reposent sur une semaine du lundi au vendredi (repos samedi–dimanche) ; utilisez le planificateur pour passer à une semaine de 4 jours (Lun–Jeu), Dim–Jeu ou Mar–Sam.</p>
+        </div>
+      </section>
+      <section class="section guide-section">
+        <div class="wrap">
+          <h2>Trois coupures individuelles à fort multiplicateur en 2027</h2>
+          <p>Comparez un week-end prolongé (3–5 jours), une coupure d’une semaine (6–9 jours) et un séjour long (10–16 jours). Chaque carte est une option individuelle indépendante.</p>
+          ${bestFr.map(t => renderStaticTripCard(t, 'fr')).join('')}
+          <h2>Noël et Nouvel An 2027/2028</h2>
+          ${yearEndFr ? renderStaticTripCard(yearEndFr, 'fr') : '<p>Aucun pont de fin d’année de 6 à 16 jours n’est disponible avec ce calendrier car les fêtes tombent le week-end.</p>'}
+          <p><strong>Frontière d’exercice :</strong> Lorsqu’une coupure de fin d’année chevauche 2027 et 2028, vérifiez sur quel exercice de congés votre employeur impute les jours de janvier.</p>
+          <div class="ad-slot" data-ad-slot="H1"></div>
+          <h2>Plannings annuels combinés sans chevauchement : 10 jours vs 20 jours</h2>
+          <p>Contrairement aux coupures individuelles ci-dessus, ces deux plannings combinent des ponts sans aucun chevauchement sur l’ensemble de l’année 2027 pour un budget de <strong>10 jours</strong> contre <strong>20 jours</strong>.</p>
+          ${annualFr.map(plan => `<article class="trip-card">
+            <h3>Budget de ${plan.budget} jours de congé → ${plan.totalOff} jours de repos au total (multiplicateur combiné ${plan.multiplier.toFixed(2)}×)</h3>
+            <p><strong>${plan.usedLeave} jour(s) posé(s) sur ${plan.budget} à travers ${plan.picks.length} périodes sans chevauchement · ${plan.left} jour(s) non utilisé(s) · ${plan.totalHol} jours fériés ouvrés mobilisés.</strong></p>
+            <ul>${plan.picks.map(t => `<li><strong>${fmtDate(iso(t.start), 'fr')} – ${fmtDate(iso(t.end), 'fr')}</strong> (${t.total} jours de repos avec ${t.leave} jour${t.leave === 1 ? '' : 's'} posé${t.leave === 1 ? '' : 's'}) : Poser <strong>${t.days.filter(x => x.type === 'work').map(x => fmtDate(iso(x.date), 'fr')).join('; ')}</strong>.${t.returnDate ? ` Reprise : ${fmtDate(iso(t.returnDate), 'fr')}.` : ''}</li>`).join('')}</ul>
+            <p><strong>Solde restant :</strong> ${esc(plan.unusedReason)}</p>
+            <p><small>${esc(plan.boundaryNote)}</small></p>
+            <a href="/fr/?country=${cc}&amp;year=2027&amp;leave=${plan.budget}&amp;range=6-9${v.key.includes('-') ? '&amp;region=' + v.key : ''}#planner">Ouvrir ce planning de ${plan.budget} jours dans le planificateur (.ics / résumé RH) →</a>
+          </article>`).join('')}
+          <div class="ad-slot" data-ad-slot="M1"></div>
+          <h2>Dates des jours fériés 2027 prises en compte (${v.nameFr})</h2>
+          <p>Ce tableau présente les ${data.holidays[v.key]['2027'].length} jours fériés du calendrier 2027 (${esc(v.scopeFr.toLowerCase())}). Les fermetures bancaires ou jours propres à un employeur ne sont pas ajoutés d’office.</p>
+          <div class="table-scroll">
+            <table class="calendar-table">
+              <caption>${v.nameFr} · Jours fériés 2027 et impact sur une semaine Lun–Ven</caption>
+              <thead><tr><th scope="col">Date</th><th scope="col">Jour</th><th scope="col">Jour férié</th><th scope="col">Économise un jour ouvré (Lun–Ven) ?</th></tr></thead>
+              <tbody>${data.holidays[v.key]['2027'].map(x => `<tr><td>${fmtDate(x.date, 'fr')}</td><td>${fmtWeekday(x.date, 'fr')}</td><td>${esc(x.name)}</td><td>${[0, 6].includes(new Date(x.date + 'T12:00:00').getDay()) ? 'Non — tombe le week-end (sauf jour de remplacement)' : 'Oui — jour de semaine (si chômé selon votre contrat)'}</td></tr>`).join('')}</tbody>
+            </table>
+          </div>
+          <p>Source officielle du calendrier : <a href="${v.url}" rel="noopener" target="_blank">${esc(v.authority)} ↗</a>.</p>
+          <h2>Congé annuel légal, jours fériés et règles de remplacement</h2>
+          <p><strong>Base légale des congés payés :</strong> ${esc(entitlementFr)}. Le congé annuel payé est distinct des jours fériés : saisissez votre solde réel de congés à poser dans le planificateur.</p>
+          ${authorityBoxFr}
+          <p>${esc(v.noteFr)}</p>
+          <p><a href="/fr/how-it-works/">Lire la méthodologie</a> · <a href="/fr/compare/">Comparer ${v.nameFr} avec un autre pays</a> · <a href="/fr/ranking/">Classement mondial des congés</a></p>
+        </div>
+      </section>
+      <div class="wrap"><div class="ad-slot" data-ad-slot="B1"></div></div>
+    </main>`;
+
+      hf = hf.replace(/<meta[^>]*name="robots"[^>]*>/g, '');
+      hf = hf.replace(/<link[^>]*hreflang=[^>]*>/g, '');
+      hf = hf.replace(
+        /(<link[^>]*rel="canonical"[^>]*>)/i,
+        `$1<link rel="alternate" hreflang="en" href="https://holidaymaximizer.com/country/${cc.toLowerCase()}/"/><link rel="alternate" hreflang="fr" href="https://holidaymaximizer.com/fr/country/${cc.toLowerCase()}/"/><link rel="alternate" hreflang="x-default" href="https://holidaymaximizer.com/country/${cc.toLowerCase()}/"/>`
+      );
+      hf = hf.replace(/<main[^>]*>[\s\S]*?<\/main>/, mainHtmlFr);
+      hf = hf.replace(/<title>.*?<\/title>/, `<title>${v.nameFr} : Congés 2027, Ponts et Jours Fériés | HolidayMaximizer</title>`);
+      hf = hf.replace(/<meta[^>]*name="description"[^>]*>/, `<meta name="description" content="Optimisez vos congés 2027 (${v.nameFr}) : jours exacts à poser, calendrier des jours fériés 2027, ponts et plannings annuels de 10 et 20 jours sans chevauchement."/>`);
+      await fs.writeFile(fFr, hf);
+    }
   }
 
-  console.log('3b. Upgrading primary-source verified country guides for SEO indexability & Adsterra slots...');
-  for (const [cc, lv] of Object.entries(verifiedLeave)) {
+  console.log('3c. Setting non-worked directory country pages (/country/<iso2>/) to noindex,follow with reciprocal hreflang...');
+  for (const [cc] of Object.entries(verifiedLeave)) {
     if (FLAGSHIP_CFG[cc]) continue;
-    const f = `${ROOT}/country/${cc.toLowerCase()}/index.html`;
-    try {
-      await fs.stat(f);
-    } catch {
-      continue;
-    }
-    let h = await fs.readFile(f, 'utf8');
-    // Make primary-source verified country guides indexable in Google Search Console
-    if (lv && lv.url && lv.source_tier !== 'secondary' && lv.source_tier !== 'territory') {
+    for (const prefix of ['', 'fr/']) {
+      const f = `${ROOT}/${prefix}country/${cc.toLowerCase()}/index.html`;
+      try {
+        await fs.stat(f);
+      } catch {
+        continue;
+      }
+      let h = await fs.readFile(f, 'utf8');
       h = h.replace(/<meta[^>]*name="robots"[^>]*>/g, '');
+      h = h.replace('</head>', '<meta name="robots" content="noindex,follow"/></head>');
+      h = h.replace(/<link[^>]*hreflang=[^>]*>/g, '');
+      h = h.replace(
+        /(<link[^>]*rel="canonical"[^>]*>)/i,
+        `$1<link rel="alternate" hreflang="en" href="https://holidaymaximizer.com/country/${cc.toLowerCase()}/"/><link rel="alternate" hreflang="fr" href="https://holidaymaximizer.com/fr/country/${cc.toLowerCase()}/"/><link rel="alternate" hreflang="x-default" href="https://holidaymaximizer.com/country/${cc.toLowerCase()}/"/>`
+      );
+      await fs.writeFile(f, h);
     }
-    if (!h.includes('data-ad-slot="H1"')) {
-      h = h.replace('</section><section class="section">', '</section><div class="wrap"><div class="ad-slot" data-ad-slot="H1"></div></div><section class="section">');
-      h = h.replace('</main>', '<div class="wrap"><div class="ad-slot" data-ad-slot="B1"></div></div></main>');
-    }
-    await fs.writeFile(f, h);
   }
 
   console.log('4. Rebuilding all 138 Regional/Year pages (2026–2031) & 23 Regional Hub pages...');
@@ -986,21 +574,26 @@ html,body{overflow-x:hidden;max-width:100%}
     const years = data.years; // [2026, 2027, 2028, 2029, 2030, 2031]
 
     for (const yr of years) {
-      const topTrips = calcTrips(localKey, yr, 20, 3, 16).filter(t => t.start.getFullYear() === yr || t.end.getFullYear() === yr).slice(0, 6);
+      const topTrips = calcTrips(localKey, yr, 20, 3, 16, 'en').filter(t => t.start.getFullYear() === yr || t.end.getFullYear() === yr).slice(0, 6);
       const hols = data.holidays[localKey][String(yr)] || [];
       const plannerUrl = `/?country=${baseCC}&amp;year=${yr}&amp;leave=20&amp;range=3-16${localKey.includes('-') ? '&amp;region=' + localKey : ''}#planner`;
+      const frPlannerUrl = `/fr/?country=${baseCC}&amp;year=${yr}&amp;leave=20&amp;range=3-16${localKey.includes('-') ? '&amp;region=' + localKey : ''}#planner`;
       const pageUrl = `https://holidaymaximizer.com/${slug}/${yr}/`;
       const title = `${locMeta.label} Annual Leave Maximizer ${yr} — Best Days to Book Off | HolidayMaximizer`;
       const desc = `Best days to take annual leave in ${locMeta.label} in ${yr}. Combine ${hols.length} public holidays and weekends into longer breaks using fewer leave days.`;
+      // Active and upcoming planning years (2026 and 2027) are indexed; 2028-2031 remain live with noindex,follow to prevent multi-year crawl dilution
+      const robotsDirective = (yr === 2026 || yr === 2027)
+        ? 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1'
+        : 'noindex,follow';
 
-      const yearPills = `<nav class="year-pills" aria-label="Select planning year">${years.map(y => `<a href="/${slug}/${y}/" class="${y === yr ? 'active' : ''}">${y}Calendar</a>`.replace('Calendar', '')).join('')}</nav>`;
+      const yearPills = `<nav class="year-pills" aria-label="Select planning year">${years.map(y => `<a href="/${slug}/${y}/" class="${y === yr ? 'active' : ''}">${y}</a>`).join('')}</nav>`;
 
       const pageHtml = `<!DOCTYPE html>
 <html lang="en"><head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <meta name="google-site-verification" content="${GSC_VERIFICATION}"/>
-<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"/>
+<meta name="robots" content="${robotsDirective}"/>
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}"/>
 <link rel="canonical" href="${pageUrl}"/>
@@ -1017,16 +610,22 @@ html,body{overflow-x:hidden;max-width:100%}
 <script defer src="/assets/app-v13.js"></script>
 <script type="application/ld+json">${JSON.stringify({
   "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://holidaymaximizer.com/" },
-    { "@type": "ListItem", "position": 2, "name": "Countries", "item": "https://holidaymaximizer.com/countries/" },
-    { "@type": "ListItem", "position": 3, "name": locMeta.country, "item": `https://holidaymaximizer.com/country/${baseCC.toLowerCase()}/` },
-    { "@type": "ListItem", "position": 4, "name": `${locMeta.label} (${yr})`, "item": pageUrl }
-  ]
+  "@type": "WebPage",
+  "name": title,
+  "description": desc,
+  "url": pageUrl,
+  "BreadcrumbList": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://holidaymaximizer.com/" },
+      { "@type": "ListItem", "position": 2, "name": "Countries", "item": "https://holidaymaximizer.com/countries/" },
+      { "@type": "ListItem", "position": 3, "name": locMeta.country, "item": `https://holidaymaximizer.com/country/${baseCC.toLowerCase()}/` },
+      { "@type": "ListItem", "position": 4, "name": `${locMeta.label} (${yr})`, "item": pageUrl }
+    ]
+  }
 })}</script>
 </head><body>
-<header class="site-header"><div class="wrap nav"><a class="brand" href="/"><span class="brand-mark">✓</span><span>HolidayMaximizer</span></a><nav aria-label="Primary navigation" class="navlinks"><a href="/#planner">Planner</a><a href="/countries/">Countries</a><a href="/compare/">Compare</a><a href="/ranking/">Global ranking</a><a href="/how-it-works/">How it works</a></nav><button aria-expanded="false" aria-label="Open navigation" class="menu-toggle" type="button">Menu</button><div class="lang-switch"><a href="/${slug}/${yr}/">EN</a><a href="/fr/">FR</a></div></div></header>
+<header class="site-header"><div class="wrap nav"><a class="brand" href="/"><span class="brand-mark">✓</span><span>HolidayMaximizer</span></a><nav aria-label="Primary navigation" class="navlinks"><a href="/#planner">Planner</a><a href="/countries/">Countries</a><a href="/compare/">Compare</a><a href="/ranking/">Global ranking</a><a href="/how-it-works/">How it works</a></nav><button aria-expanded="false" aria-label="Open navigation" class="menu-toggle" type="button">Menu</button><div class="lang-switch"><a href="/${slug}/${yr}/">EN</a><a href="${frPlannerUrl}">FR</a></div></div></header>
 <a class="skip-link" href="#main-content">Skip to content</a>
 <main id="main-content">
   <section class="country-hero">
@@ -1036,27 +635,27 @@ html,body{overflow-x:hidden;max-width:100%}
       <h1>Best days to take annual leave in ${esc(locMeta.label)} in ${yr}</h1>
       <p class="section-intro">Use public holidays and weekends to stretch your ${yr} annual leave further. Below are the highest-value date combinations and the exact workdays to request.</p>
       ${yearPills}
-      <div class="country-note"><strong>Coverage note:</strong> ${esc(locMeta.note)} Always confirm entitlement with official/local sources and your employer.</div>
+      <div class="country-note"><strong>Coverage &amp; rules note:</strong> ${esc(locMeta.note)} Always confirm statutory leave entitlement, bank closures and replacement days with official/local sources and your employer.</div>
       <p><a class="btn" href="${plannerUrl}">Customize ${esc(locMeta.label)} ${yr} in the interactive planner →</a></p>
     </div>
   </section>
-  <div class="wrap"><div class="ad-slot" data-ad-slot="H1"></div></div>
   <section class="section guide-section">
     <div class="wrap">
       <h2>Top ${yr} leave combinations for ${esc(locMeta.label)}</h2>
-      <p>Each recommendation below is a standalone break option assuming a Monday–Friday workweek. Open the interactive planner above to adjust your leave allowance, workweek pattern, or export a <code>.ics</code> calendar file.</p>
-      ${topTrips.map(renderStaticTripCard).join('')}
-      <div class="ad-slot" data-ad-slot="M1"></div>
+      <p>Each recommendation below is a standalone break option assuming a Monday–Friday workweek (Saturday–Sunday rest days). Open the interactive planner above to build a combined non-overlapping annual schedule, switch workweek patterns, or export a <code>.ics</code> calendar file.</p>
+      ${topTrips.map(t => renderStaticTripCard(t, 'en')).join('')}
+      <div class="ad-slot" data-ad-slot="H1"></div>
       <h2>${yr} public holidays in ${esc(locMeta.label)}</h2>
       <p>These ${hols.length} public-holiday dates feed the ${yr} optimization above.</p>
       <div class="table-scroll">
         <table class="calendar-table">
           <caption>${esc(locMeta.label)} · ${yr} public holidays</caption>
-          <thead><tr><th scope="col">Date</th><th scope="col">Day</th><th scope="col">Holiday</th><th scope="col">Weekday saved?</th></tr></thead>
-          <tbody>${hols.map(x => `<tr><td>${fmtDate(x.date)}</td><td>${fmtWeekday(x.date)}</td><td>${esc(x.name)}</td><td>${[0, 6].includes(new Date(x.date + 'T12:00:00').getDay()) ? 'No — weekend' : 'Yes, if off work'}</td></tr>`).join('')}</tbody>
+          <thead><tr><th scope="col">Date</th><th scope="col">Day</th><th scope="col">Holiday</th><th scope="col">Saves a Mon–Fri workday?</th></tr></thead>
+          <tbody>${hols.map(x => `<tr><td>${fmtDate(x.date, 'en')}</td><td>${fmtWeekday(x.date, 'en')}</td><td>${esc(x.name)}</td><td>${[0, 6].includes(new Date(x.date + 'T12:00:00').getDay()) ? 'No — falls on weekend' : 'Yes — weekday (if off work)'}</td></tr>`).join('')}</tbody>
         </table>
       </div>
-      <p style="margin-top:20px"><a href="/country/${baseCC.toLowerCase()}/">← Back to ${esc(locMeta.country)} main guide</a> · <a href="${plannerUrl}">Open interactive planner →</a></p>
+      <div class="ad-slot" data-ad-slot="M1"></div>
+      <p style="margin-top:20px"><a href="/country/${baseCC.toLowerCase()}/">← Back to ${esc(locMeta.country)} 2027 main guide</a> · <a href="${plannerUrl}">Open interactive planner →</a></p>
     </div>
   </section>
   <div class="wrap"><div class="ad-slot" data-ad-slot="B1"></div></div>
@@ -1068,93 +667,112 @@ html,body{overflow-x:hidden;max-width:100%}
       await fs.mkdir(outDir, { recursive: true });
       await fs.writeFile(`${outDir}/index.html`, pageHtml);
 
-      // Also write /<slug>/index.html hub page (pointing to 2027 as canonical or overview)
+      // Write self-canonical /<slug>/index.html hub page with noindex,follow so it never triggers duplicate canonical warnings
       if (yr === 2027) {
         const hubUrl = `https://holidaymaximizer.com/${slug}/`;
         const hubHtml = pageHtml
-          .replace(`<link rel="canonical" href="${pageUrl}"/>`, `<link rel="canonical" href="https://holidaymaximizer.com/${slug}/2027/"/>`)
+          .replace(`<meta name="robots" content="${robotsDirective}"/>`, `<meta name="robots" content="noindex,follow"/>`)
+          .replace(`<link rel="canonical" href="${pageUrl}"/>`, `<link rel="canonical" href="${hubUrl}"/>`)
           .replace(`<meta property="og:url" content="${pageUrl}"/>`, `<meta property="og:url" content="${hubUrl}"/>`);
         await fs.writeFile(`${ROOT}/${slug}/index.html`, hubHtml);
       }
     }
   }
 
-  console.log('5. Updating Homepage, Countries directory, Privacy policy, and global HTML pages...');
-  // Update homepage featured guides to include all 15 flagship countries + ad slots + FAQ schema
-  for (const homeRel of ['index.html', 'fr/index.html']) {
-    const isFr = homeRel.startsWith('fr/');
-    const f = `${ROOT}/${homeRel}`;
-    let h = await fs.readFile(f, 'utf8');
-    if (!isFr) {
-      h = h.replace(
-        /<nav class="featured-guides" aria-label="Detailed country guides">[\s\S]*?<\/nav>/,
-        `<nav class="featured-guides" aria-label="Detailed country guides">${Object.entries(FLAGSHIP_CFG).map(([c, v]) => `<a href="/country/${c.toLowerCase()}/">${v.name}</a>`).join('')}</nav>`
-      );
-    }
-    // Insert ad slots on homepage if not present
+  console.log('5. Updating Homepage (EN/FR), Countries Hub (EN/FR), Methodology, Sources & Privacy...');
+  // Update homepage supporting prose to reconcile workweek patterns + statutory/public/bank/replacement distinctions + regional links
+  {
+    const fEn = `${ROOT}/index.html`;
+    let h = await fs.readFile(fEn, 'utf8');
+    const regional2027Links = Object.entries(REGION_SLUGS)
+      .map(([k, slug]) => `<a href="/${slug}/2027/">${esc(data.locales[k]?.label || k)} 2027</a>`)
+      .join('');
+    const homeGuideSection = `<section class="section guide-section"><div class="wrap">
+      <h2>What does “maximizing leave” mean?</h2>
+      <p>Choose a country, your state or region, a planning year, the leave days you can book, your preferred trip length and your <strong>workweek pattern</strong> (standard <strong>Monday–Friday</strong>, <strong>4-day Monday–Thursday</strong>, <strong>Sunday–Thursday</strong> or <strong>Tuesday–Saturday</strong>). The planner counts each ordinary working day in your selected workweek as leave, then bridges those workdays across your scheduled weekly rest days and the selected calendar’s public holidays.</p>
+      <p>Your results are presented in two distinct modes: <strong>Mode 1 (Combined full-year schedule)</strong> uses dynamic programming to assemble a non-overlapping annual plan within your leave budget, while <strong>Mode 2 (Individual break alternatives)</strong> ranks standalone single breaks by efficiency multiplier (consecutive days off divided by leave days booked).</p>
+      <h2>A real example: Ireland, 2027</h2>
+      <div class="trip-card"><h3>4 leave days → 9 consecutive days off (2.25× multiplier)</h3><p>Book <strong>30 March–2 April 2027</strong> (Tuesday–Friday). With Easter Monday on <strong>29 March 2027</strong> and the weekends of 27–28 March and 3–4 April, your break runs <strong>27 March–4 April 2027</strong> (return to work: Monday 5 April 2027).</p><p>9 days = 4 leave days + 1 workday public holiday + 4 weekend days. Good Friday is not assumed off in Ireland because it is not a statutory public holiday. <a href="/country/ie/">See Ireland’s 2027 dates and local rules</a>.</p><a href="/?country=IE&amp;year=2027&amp;leave=4&amp;range=6-9#planner">Open this 4-day Ireland example in the planner →</a></div>
+      <h2>Start with a worked 2027 country guide</h2>
+      <nav class="featured-guides" aria-label="Detailed 2027 country guides">${Object.entries(FLAGSHIP_CFG).map(([c, v]) => `<a href="/country/${c.toLowerCase()}/">${v.name} 2027</a>`).join('')}</nav>
+      <h2>Regional &amp; sub-national 2027 calendars</h2>
+      <p>Public holidays differ by nation, state, province or Land in the UK, Germany, Australia, Canada and the US. Open a regional calendar directly:</p>
+      <nav class="featured-guides" aria-label="Regional 2027 calendars">${regional2027Links}</nav>
+      <h2>Statutory leave vs. public holidays, bank closures &amp; replacement days</h2>
+      <p><strong>Statutory annual leave</strong> is your legal minimum paid vacation entitlement (for example 25 workdays in Denmark, France, Sweden and Austria, or 20 workdays in Germany, Italy, Belgium and the Netherlands). <strong>Public holidays</strong> are calendar dates set by law or collective agreement, which are distinct from <strong>bank closure days</strong> (such as 5 June or 24 December in Denmark) and <strong>employer-specific or collective-agreement days</strong> (such as French RTT, Danish feriefridage or Swedish klämdagar).</p>
+      <p>Where a country’s law requires an employer-assigned <strong>replacement day</strong> when a public holiday falls on a rest day (such as in Belgium) or when you switch to a non-Monday–Friday workweek where a holiday falls on your scheduled rest day, the planner does not silently invent a substitute date—check your contract and adjust your booking accordingly.</p>
+      <p><a href="/how-it-works/">How the ranking, workweek maths and annual schedules work</a> · <a href="/sources/">Official sources &amp; dataset notes</a></p>
+    </div></section>`;
+    h = h.replace(/<section class="section guide-section">[\s\S]*?<\/section>/, homeGuideSection);
     if (!h.includes('data-ad-slot="H1"')) {
       h = h.replace('</section><section class="hero">', '</section><div class="wrap"><div class="ad-slot" data-ad-slot="H1"></div></div><section class="hero">');
       h = h.replace('</main>', '<div class="wrap"><div class="ad-slot" data-ad-slot="B1"></div></div></main>');
     }
-    await fs.writeFile(f, h);
+    await fs.writeFile(fEn, h);
+
+    // French homepage (/fr/index.html)
+    const fFr = `${ROOT}/fr/index.html`;
+    let hf = await fs.readFile(fFr, 'utf8');
+    const homeGuideSectionFr = `<section class="section guide-section"><div class="wrap">
+      <h2>Que signifie « optimiser ses congés » ?</h2>
+      <p>Choisissez un pays, votre région, une année, votre budget de congés, la durée souhaitée et votre <strong>rythme de travail</strong> (<strong>lundi–vendredi</strong> standard, <strong>semaine de 4 jours lundi–jeudi</strong>, <strong>dimanche–jeudi</strong> ou <strong>mardi–samedi</strong>). Le planificateur compte chaque jour ouvré habituel de votre rythme de travail comme un jour de congé à poser, puis le relie à vos jours de repos hebdomadaires et aux jours fériés du calendrier sélectionné.</p>
+      <p>Les résultats sont présentés selon deux modes distincts : le <strong>Mode 1 (Plan annuel combiné)</strong> assemble un calendrier annuel sans chevauchement dans la limite de votre budget, tandis que le <strong>Mode 2 (Options individuelles)</strong> classe les coupures indépendantes selon leur multiplicateur d’efficacité.</p>
+      <h2>Un exemple concret : Irlande, 2027</h2>
+      <div class="trip-card"><h3>4 jours posés → 9 jours de repos consécutifs (multiplicateur 2,25×)</h3><p>Posez du <strong>30 mars au 2 avril 2027</strong> (mardi–vendredi). Avec le lundi de Pâques le <strong>29 mars 2027</strong> et les week-ends des 27–28 mars et 3–4 avril, votre coupure s’étend du <strong>27 mars au 4 avril 2027</strong> (reprise le lundi 5 avril 2027).</p><p>9 jours = 4 jours de congé + 1 jour férié ouvré + 4 jours de week-end. Le Vendredi saint n’est pas présumé chômé en Irlande. <a href="/fr/country/ie/">Voir les dates 2027 et règles locales en Irlande</a>.</p><a href="/fr/?country=IE&amp;year=2027&amp;leave=4&amp;range=6-9#planner">Essayer cet exemple de 4 jours dans le planificateur →</a></div>
+      <h2>Guides pays 2027 détaillés</h2>
+      <nav class="featured-guides" aria-label="Guides pays détaillés 2027">${Object.entries(FLAGSHIP_CFG).map(([c, v]) => `<a href="/fr/country/${c.toLowerCase()}/">${v.nameFr} 2027</a>`).join('')}</nav>
+      <h2>Congé légal, jours fériés, fermetures bancaires et jours de remplacement</h2>
+      <p>Le <strong>congé annuel payé légal</strong> est distinct des <strong>jours fériés</strong>, des <strong>fermetures bancaires</strong> (comme le 5 juin ou le 24 décembre au Danemark) et des jours conventionnels (RTT en France, feriefridage au Danemark, klämdagar en Suède). Lorsqu’un jour férié tombe sur un jour de repos habituel de votre rythme de travail, le modèle ne crée pas de jour de remplacement fictif : vérifiez les règles de votre employeur.</p>
+      <p><a href="/fr/how-it-works/">Comprendre le calcul et les plannings annuels</a> · <a href="/fr/sources/">Sources officielles et données</a></p>
+    </div></section>`;
+    hf = hf.replace(/<section class="section guide-section">[\s\S]*?<\/section>/, homeGuideSectionFr);
+    if (!hf.includes('data-ad-slot="H1"')) {
+      hf = hf.replace('</section><section class="hero">', '</section><div class="wrap"><div class="ad-slot" data-ad-slot="H1"></div></div><section class="hero">');
+      hf = hf.replace('</main>', '<div class="wrap"><div class="ad-slot" data-ad-slot="B1"></div></div></main>');
+    }
+    await fs.writeFile(fFr, hf);
   }
 
-  // Update countries/index.html featured guides to all 15 flagship guides
+  // Update countries/index.html and fr/countries/index.html to link all 15 flagship guides AND all 46 regional 2026 & 2027 calendars
   {
     const f = `${ROOT}/countries/index.html`;
     let h = await fs.readFile(f, 'utf8');
+    const regional2026And2027Html = `<section class="regional-hub-block" style="margin:24px 0">
+      <h2>Regional &amp; Multi-Year Calendars (2026–2027)</h2>
+      <p>Direct links to worked 2026 and 2027 public-holiday and annual-leave guides by region, state and nation:</p>
+      <nav class="featured-guides" aria-label="Regional 2026 and 2027 planning calendars">
+        ${Object.entries(REGION_SLUGS).flatMap(([k, slug]) => {
+          const lbl = data.locales[k]?.label || k;
+          return [`<a href="/${slug}/2027/">${esc(lbl)} 2027</a>`, `<a href="/${slug}/2026/">${esc(lbl)} 2026</a>`];
+        }).join('')}
+      </nav>
+    </section>`;
+    h = h.replace(/<section class="regional-hub-block"[\s\S]*?<\/section>/g, '');
     h = h.replace(
       /<nav class="featured-guides" aria-label="2027 planning guides">[\s\S]*?<\/nav>/,
-      `<nav class="featured-guides" aria-label="2027 planning guides">${Object.entries(FLAGSHIP_CFG).map(([c, v]) => `<a href="/country/${c.toLowerCase()}/">${v.name} 2027</a>`).join('')}</nav>`
+      `<nav class="featured-guides" aria-label="2027 planning guides">${Object.entries(FLAGSHIP_CFG).map(([c, v]) => `<a href="/country/${c.toLowerCase()}/">${v.name} 2027</a>`).join('')}</nav>${regional2026And2027Html}`
     );
     await fs.writeFile(f, h);
+
+    const fFr = `${ROOT}/fr/countries/index.html`;
+    let hf = await fs.readFile(fFr, 'utf8');
+    hf = hf.replace(
+      /<nav class="featured-guides"[^>]*>[\s\S]*?<\/nav>/,
+      `<nav class="featured-guides" aria-label="Guides 2027 détaillés">${Object.entries(FLAGSHIP_CFG).map(([c, v]) => `<a href="/fr/country/${c.toLowerCase()}/">${v.nameFr} 2027</a>`).join('')}</nav>`
+    );
+    await fs.writeFile(fFr, hf);
   }
 
-  // Update Privacy Policy (EN and FR) to disclose Adsterra and cookie controls accurately
+  // Update Privacy Policy (EN and FR)
   {
     const enPriv = `${ROOT}/privacy/index.html`;
     let h = await fs.readFile(enPriv, 'utf8');
     h = h.replace(
       /<h2>Advertising and cookies<\/h2>[\s\S]*?(?=<h2>Why data may be processed<\/h2>)/,
-      `<h2>Advertising and cookies</h2><p>To keep HolidayMaximizer free without requiring accounts or subscriptions, selected pages display banner advertisements provided by our advertising partner, <strong>Adsterra</strong>. We do not use popunders, disguised social bars or adult advertisements.</p><p>For visitors in the European Economic Area (EEA) and the United Kingdom, non-essential advertising scripts are not loaded unless you grant consent via the privacy banner. You can change or withdraw your choice at any time using the <a href="#" data-open-consent>Cookie preferences</a> link in the site footer. Downloaded holiday calendars may also be cached in browser local storage for up to 24 hours purely to support the calculator.</p>`
+      `<h2>Advertising, referrals and cookies</h2><p>To keep HolidayMaximizer free without requiring accounts or subscriptions, selected pages display banner advertisements provided by our advertising partner, <strong>Adsterra</strong> (Domain ID 6176073). We do not use popunders, disguised social bars or adult advertisements. After dates are calculated, results may also include clearly disclosed travel comparison links.</p><p>For visitors in the European Economic Area (EEA) and the United Kingdom, non-essential advertising scripts are not loaded unless you grant consent via the privacy banner. You can change or withdraw your choice at any time using the <a href="#" data-open-consent>Cookie preferences</a> link in the site footer. Downloaded holiday calendars and aggregate non-personal usage counts may be stored in browser local storage purely to support the calculator and measure feature reliability without transmitting personal leave dates.</p>`
     );
-    h = h.replace(/<h2>Third-party information<\/h2>[\s\S]*?<\/p>/, `<h2>Third-party information</h2><p>Adsterra, Cloudflare and Nager.Holidays publish their own privacy policies for technical or advertising data they process as independent service providers.</p>`);
-    h = h.replace('19 October 2026', '4 November 2026');
+    h = h.replace('4 November 2026', '6 November 2026');
     await fs.writeFile(enPriv, h);
-
-    const frPriv = `${ROOT}/fr/privacy/index.html`;
-    let hf = await fs.readFile(frPriv, 'utf8');
-    hf = hf.replace(
-      /<h2>Publicité et cookies<\/h2>[\s\S]*?(?=<h2>Base du traitement<\/h2>)/,
-      `<h2>Publicité et cookies</h2><p>Pour maintenir HolidayMaximizer gratuit sans création de compte ni abonnement, certaines pages affichent des bannières publicitaires fournies par notre partenaire <strong>Adsterra</strong>. Aucun format intrusif (popunder) ni publicité pour adultes n’est activé.</p><p>Pour les visiteurs situés dans l’Espace économique européen (EEE) et au Royaume-Uni, les scripts publicitaires non essentiels ne sont chargés qu’après votre consentement explicite. Vous pouvez modifier votre choix à tout moment via le lien <a href="#" data-open-consent>Préférences cookies</a> situé en pied de page. Les calendriers téléchargés peuvent être mis en cache dans le stockage local du navigateur pendant 24 heures pour le fonctionnement du calculateur.</p>`
-    );
-    hf = hf.replace(/<h2>Services tiers<\/h2>[\s\S]*?<\/p>/, `<h2>Services tiers</h2><p>Adsterra, Cloudflare et Nager.Holidays publient leurs propres politiques de confidentialité concernant les données qu’ils traitent en tant que prestataires indépendants.</p>`);
-    hf = hf.replace('19 octobre 2026', '4 novembre 2026');
-    await fs.writeFile(frPriv, hf);
-  }
-
-  // Fix truncated meta description in how-it-works/index.html
-  {
-    const f = `${ROOT}/how-it-works/index.html`;
-    let h = await fs.readFile(f, 'utf8');
-    h = h.replaceAll(
-      'The planner scans continuous date windows, marks weekends and public holidays, counts the ordinary working days that would need annual leave, and ranks com',
-      'Learn how HolidayMaximizer scans continuous date windows, combines public holidays and weekends, calculates efficiency multipliers, and builds annual leave plans.'
-    );
-    await fs.writeFile(f, h);
-  }
-
-  // Make /compare/ and /ranking/ indexable (they are rich, unique value-add tools!) and add ad slots
-  for (const toolRel of ['compare/index.html', 'ranking/index.html', 'fr/compare/index.html', 'fr/ranking/index.html']) {
-    const f = `${ROOT}/${toolRel}`;
-    let h = await fs.readFile(f, 'utf8');
-    if (!toolRel.startsWith('fr/')) {
-      h = h.replace(/<meta[^>]*name="robots"[^>]*>/g, '');
-    }
-    if (!h.includes('data-ad-slot="H1"')) {
-      h = h.replace('</section></main>', '<div class="ad-slot" data-ad-slot="B1"></div></section></main>');
-    }
-    await fs.writeFile(f, h);
   }
 
   // Global pass across all HTML files in ROOT
@@ -1166,7 +784,6 @@ html,body{overflow-x:hidden;max-width:100%}
     const rel = path.relative(ROOT, f).replaceAll('\\', '/');
     const isFr = rel.startsWith('fr/');
 
-    // Upgrade CSS & JS references to v13
     h = h
       .replaceAll('/assets/style-v12.css', '/assets/style-v13.css')
       .replaceAll('/assets/style-v10.css', '/assets/style-v13.css')
@@ -1175,27 +792,40 @@ html,body{overflow-x:hidden;max-width:100%}
       .replaceAll('/assets/app-v11.js', '/assets/app-v13.js')
       .replaceAll('/assets/app.js', '/assets/app-v13.js');
 
-    // Remove all AdSense meta tags and scripts
     h = h.replace(/<meta[^>]*name="google-adsense-account"[^>]*>/gi, '');
     h = h.replace(/<script[^>]*pagead2\.googlesyndication\.com[^>]*><\/script>/gi, '');
+    h = h.replace(/(<div class="ad-slot" data-ad-slot="B1"><\/div>\s*){2,}/g, '<div class="ad-slot" data-ad-slot="B1"></div>');
 
-    // Ensure Google Search Console verification tag is present
+    // Ensure skip-link is the first focusable element inside <body> (before <header>)
+    if (h.includes('<header class="site-header">') && h.includes('class="skip-link"')) {
+      const skipMatch = h.match(/<a[^>]*class="skip-link"[^>]*>[\s\S]*?<\/a>/i);
+      if (skipMatch) {
+        const skipTag = skipMatch[0];
+        h = h.replace(skipTag, '');
+        h = h.replace(/<body([^>]*)>\s*/i, `<body$1>${skipTag}`);
+      }
+    }
+
+    // Ensure reciprocal FR compare and ranking pages are indexable like their EN counterparts
+    if (rel === 'fr/compare/index.html' || rel === 'fr/ranking/index.html') {
+      h = h.replace('<meta name="robots" content="noindex,follow"/>', '<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"/>');
+    }
+
     if (!h.includes('google-site-verification')) {
       h = h.replace(/(<meta[^>]*name="viewport"[^>]*>)/i, `$1<meta name="google-site-verification" content="${GSC_VERIFICATION}"/>`);
     }
 
-    // Ensure robots meta tag on indexable pages has max-image-preview:large,max-snippet:-1
     if (!h.includes('noindex') && rel !== '404.html') {
       if (!h.includes('name="robots"')) {
         h = h.replace('</head>', '<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"/></head>');
       }
       const canonical = h.match(/<link[^>]*rel="canonical"[^>]*href="([^"]+)"/i)?.[1] || h.match(/<link[^>]*href="([^"]+)"[^>]*rel="canonical"/i)?.[1];
-      if (canonical && canonical === `https://holidaymaximizer.com/${rel === 'index.html' ? '' : rel.replace(/index\.html$/, '')}`) {
+      const expectedUrl = `https://holidaymaximizer.com/${rel === 'index.html' ? '' : rel.replace(/index\.html$/, '')}`;
+      if (canonical && canonical === expectedUrl) {
         indexedUrls.add(canonical);
       }
     }
 
-    // Ensure Cookie preferences link is in the footer
     if (!h.includes('data-open-consent')) {
       if (isFr) {
         h = h.replace('<a href="/fr/privacy/">Confidentialité</a>', '<a href="/fr/privacy/">Confidentialité</a><a href="#" data-open-consent>Préférences cookies</a>');
@@ -1207,25 +837,38 @@ html,body{overflow-x:hidden;max-width:100%}
     await fs.writeFile(f, h);
   }
 
-  // Write updated sitemap.xml
   const sortedUrls = [...indexedUrls].sort();
   const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sortedUrls.map(u => `  <url><loc>${u}</loc><lastmod>${TODAY}</lastmod></url>`).join('\n')}\n</urlset>\n`;
   await fs.writeFile(`${ROOT}/sitemap.xml`, sitemapXml);
 
-  // Update ads.txt, robots.txt, _headers, BUILD-SUMMARY.json, llms.txt
-  await fs.writeFile(`${ROOT}/ads.txt`, `# HolidayMaximizer.com — Adsterra Direct Publisher\n# Domain ID: 6176073 | Publisher ID: 3529548\n`);
+  // Document ads.txt accurately: only include verified IAB seller records if supplied by retained partners
+  await fs.writeFile(
+    `${ROOT}/ads.txt`,
+    `# HolidayMaximizer.com — Advertising Authorization Notice\n# Active display partner: Adsterra Direct Publisher (Domain ID: 6176073, Publisher ID: 3529548)\n# Note: Standard Adsterra direct display banner units (728x90, 300x250, 320x50) do not require or issue IAB ads.txt seller lines.\n`
+  );
   await fs.writeFile(`${ROOT}/robots.txt`, `User-agent: *\nAllow: /\n\nSitemap: https://holidaymaximizer.com/sitemap.xml\n`);
-  await fs.writeFile(`${ROOT}/_headers`, `/*\n  X-Content-Type-Options: nosniff\n  X-Frame-Options: SAMEORIGIN\n  Referrer-Policy: strict-origin-when-cross-origin\n  Permissions-Policy: geolocation=(), camera=(), microphone=()\n\n/assets/*\n  Cache-Control: public, max-age=604800\n\n/data/*\n  Cache-Control: public, max-age=86400\n\n/ads.txt\n  Content-Type: text/plain; charset=utf-8\n  Cache-Control: public, max-age=300\n\n/robots.txt\n  Content-Type: text/plain; charset=utf-8\n  Cache-Control: public, max-age=300\n`);
+  await fs.writeFile(`${ROOT}/${INDEXNOW_KEY}.txt`, INDEXNOW_KEY);
+  await fs.writeFile(
+    `${ROOT}/_headers`,
+    `/*\n  X-Content-Type-Options: nosniff\n  X-Frame-Options: SAMEORIGIN\n  Referrer-Policy: strict-origin-when-cross-origin\n  Permissions-Policy: geolocation=(), camera=(), microphone=()\n\n/assets/*\n  Cache-Control: public, max-age=604800\n\n/data/*\n  Cache-Control: public, max-age=86400\n\n/ads.txt\n  Content-Type: text/plain; charset=utf-8\n  Cache-Control: public, max-age=300\n\n/robots.txt\n  Content-Type: text/plain; charset=utf-8\n  Cache-Control: public, max-age=300\n\n/${INDEXNOW_KEY}.txt\n  Content-Type: text/plain; charset=utf-8\n  Cache-Control: public, max-age=86400\n`
+  );
 
   const summary = {
-    version: 'V13',
+    version: 'V13.2',
     releaseDate: TODAY,
     totalHtmlPages: allHtmlFiles.length,
     indexableSitemapUrls: sortedUrls.length,
-    flagshipCountryGuides: Object.keys(FLAGSHIP_CFG).length,
-    regionalMultiYearPages: Object.keys(REGION_SLUGS).length * 6,
+    workedFlagshipGuidesEn: Object.keys(FLAGSHIP_CFG).length,
+    workedFlagshipGuidesFr: Object.keys(FLAGSHIP_CFG).length,
+    indexedRegionalYearPages2026_2027: Object.keys(REGION_SLUGS).length * 2,
+    noindexFutureRegionalPages2028_2031: Object.keys(REGION_SLUGS).length * 4,
+    indexNowKeyFile: `/${INDEXNOW_KEY}.txt`,
     adsterraDomainId: 6176073,
-    adsterraPlacements: ['728x90_1 (8da4f60a736e13046a9c88be9b8de6bd)', '300x250_1 (17d46e7ef75e864b11e99a78a4ef5046)', '320x50_1 (5302600cb2f933f200f0cf885a9bf708)']
+    adsterraPlacements: [
+      '728x90_1 (8da4f60a736e13046a9c88be9b8de6bd)',
+      '300x250_1 (17d46e7ef75e864b11e99a78a4ef5046)',
+      '320x50_1 (5302600cb2f933f200f0cf885a9bf708)'
+    ]
   };
   await fs.writeFile(`${ROOT}/BUILD-SUMMARY.json`, JSON.stringify(summary, null, 2));
   console.log('BUILD SUMMARY:', summary);

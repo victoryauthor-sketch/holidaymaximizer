@@ -42,23 +42,39 @@
 
 /* Dated guides and accessible reading */
 .guide-section{padding-top:30px}.guide-section h2{margin-top:36px}.guide-section p,.prose p,.prose li{max-width:78ch}.trip-card h3{margin-top:0}.calendar-table{width:100%;border-collapse:collapse;background:#fff}.calendar-table th,.calendar-table td{padding:12px;text-align:left;border-bottom:1px solid #dfe7df}.calendar-table caption{text-align:left;font-weight:700;padding:12px}.featured-guides{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0}.featured-guides a{padding:12px 16px;background:#e8f5ec;border-radius:10px;font-weight:700;min-height:44px}.skip-link{position:absolute;left:-10000px}.skip-link:focus{left:16px;top:8px;z-index:100;background:white;padding:12px}.book-dates{font-size:14px}.btn{background:#a74620;color:#fff}.field small{color:#d7e5dc}.trip-days{overflow-x:auto}.lang-switch a{min-width:44px;min-height:44px;display:inline-flex;align-items:center;justify-content:center}.country-hero .btn{display:inline-block;width:auto}.country-hero h1{font-size:clamp(30px,5vw,54px);line-height:1.1}.prose{max-width:1000px}.trip-card p{overflow-wrap:anywhere}@media(max-width:520px){.calendar-table{font-size:13px}.calendar-table th,.calendar-table td{padding:9px 6px}.trip-top{flex-wrap:wrap}.brand span:last-child{font-size:14px}.nav{gap:5px}.lang-switch a{min-width:36px}.country-hero{padding-top:28px}.section{padding-bottom:36px}}
-/* V13 Combined Annual Plan, Interactive Actions, Regional Switchers & Adsterra Slots */
-.annual-plan-card{background:linear-gradient(135deg,#eef7f0 0%,#ffffff 100%);border:2px solid #2b6b4f;border-radius:22px;padding:22px;margin-bottom:18px;box-shadow:0 12px 30px rgba(23,60,46,.08)}
+/* V13 Combined Annual Plan, Single-Break Separation, Reserved Ad Space & Responsive Consent */
+html,body{overflow-x:hidden;max-width:100%}
+body.has-consent-banner{padding-bottom:130px}
+.annual-plan-card{background:linear-gradient(135deg,#eef7f0 0%,#ffffff 100%);border:2px solid #2b6b4f;border-radius:22px;padding:22px;margin-bottom:22px;box-shadow:0 12px 30px rgba(23,60,46,.08)}
 .annual-plan-top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
 .annual-plan-card h4{font-size:21px;font-weight:900;letter-spacing:-.03em;margin:10px 0 4px;color:#173c2e}
 .annual-plan-sub{margin:0;font-size:13px;color:#4a5d52;font-weight:600}
 .annual-plan-list{margin:14px 0;padding-left:18px;font-size:14px;color:#24352c;line-height:1.65}
-.annual-plan-list li{margin-bottom:4px}
+.annual-plan-list li{margin-bottom:8px}
+.plan-meta-notes{background:#f5f9f6;border:1px solid #d5e2d8;border-radius:12px;padding:10px 14px;margin:12px 0;font-size:13px;color:#2b3d34;line-height:1.5}
+.plan-note-item{margin:4px 0}
+.single-breaks-header{margin:24px 0 12px;padding-top:16px;border-top:2px solid #dce5dd}
+.single-breaks-header h4{margin:0 0 4px;font-size:18px;font-weight:850;color:#173c2e}
+.single-breaks-header p{margin:0;font-size:13px;color:#4a5d52}
+.rest-holiday-note{margin:6px 0 10px;color:#5a6b60;font-size:12px}
 .trip-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;padding-top:12px;border-top:1px dashed #dce5dd}
-.chip-btn{border:1px solid #cdd8cf;background:#f7faf7;color:#173c2e;border-radius:10px;padding:7px 12px;font:inherit;font-size:12px;font-weight:750;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:6px}
+.chip-btn{border:1px solid #cdd8cf;background:#f7faf7;color:#173c2e;border-radius:10px;padding:7px 12px;font:inherit;font-size:12px;font-weight:750;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:6px;text-decoration:none}
 .chip-btn:hover{background:#e8f5ec;border-color:#9fc5ac}
 .chip-btn.primary{background:#173c2e;color:#fff;border-color:#173c2e}
 .chip-btn.primary:hover{background:#215440}
+.chip-btn.referral-link{background:#fff8f3;border-color:#f0cbb4;color:#7a3410}
+.chip-btn.referral-link:hover{background:#ffefe5}
+.hr-summary-box{margin-top:12px;border-top:1px solid #dce5dd;padding-top:10px;font-size:13px}
+.hr-summary-box summary{cursor:pointer;font-weight:750;color:#173c2e}
+.hr-summary-pre{background:#fff;border:1px solid #d5e0d7;border-radius:10px;padding:12px;margin-top:8px;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;line-height:1.5;color:#1e2d24}
 .year-pills{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0}
 .year-pills a{padding:9px 15px;border-radius:999px;background:#fff;border:1px solid #d5e0d7;text-decoration:none;font-weight:800;font-size:13px;color:#2b3d34;transition:.15s}
 .year-pills a:hover,.year-pills a.active{background:#173c2e;color:#fff;border-color:#173c2e}
-.ad-slot{display:none;margin:24px auto;text-align:center;max-width:100%;overflow:hidden}
+.ad-slot{display:none;margin:24px auto;text-align:center;max-width:100%;overflow:hidden;box-sizing:border-box}
 .ad-slot.ad-active{display:block;padding:10px 0}
+.ad-slot.ad-active.ad-size-728{min-height:116px}
+.ad-slot.ad-active.ad-size-320{min-height:76px}
+.ad-slot.ad-active.ad-size-300{min-height:276px}
 .ad-slot-label{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#76837b;margin-bottom:6px;font-weight:700}
 .consent-banner{position:fixed;bottom:0;left:0;right:0;z-index:99;background:#173c2e;color:#fff;border-top:2px solid #2e6950;padding:16px 0;box-shadow:0 -12px 32px rgba(0,0,0,.22)}
 .consent-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
@@ -67,6 +83,5 @@
 .consent-actions{display:flex;gap:10px;flex-wrap:wrap;flex:0 0 auto}
 .consent-btn-accept{width:auto;min-height:40px;padding:9px 16px;font-size:13px;background:#f1783e}
 .consent-btn-decline{width:auto;min-height:40px;padding:9px 16px;font-size:13px;background:transparent;border:1px solid #8ab09d;box-shadow:none}
-html,body{overflow-x:hidden;max-width:100%}
 @media(max-width:600px){.annual-plan-top{display:block}.consent-inner{flex-direction:column;align-items:stretch}.consent-actions button{width:100%}}
 @media(max-width:380px){.wrap{padding:0 12px}.ad-slot{margin:16px -12px}}

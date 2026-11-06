@@ -1,2 +1,3 @@
-# HolidayMaximizer.com — Adsterra Direct Publisher
-# Domain ID: 6176073 | Publisher ID: 3529548
+# HolidayMaximizer.com — Advertising Authorization Notice
+# Active display partner: Adsterra Direct Publisher (Domain ID: 6176073, Publisher ID: 3529548)
+# Note: Standard Adsterra direct display banner units (728x90, 300x250, 320x50) do not require or issue IAB ads.txt seller lines.
