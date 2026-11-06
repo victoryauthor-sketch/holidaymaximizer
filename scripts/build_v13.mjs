@@ -256,9 +256,10 @@ async function main() {
 
   await fs.writeFile(`${ROOT}/data/holidays-v13.json`, JSON.stringify(data));
 
-  console.log('2. Writing assets/app-v13.js and assets/style-v13.css...');
+  console.log('2. Writing assets/app-v13.js (and app-v13-2.js) and assets/style-v13.css (and style-v13-2.css)...');
   const appV13 = await fs.readFile(`${ROOT}/scripts/client_bundle_src.js`, 'utf8');
   await fs.writeFile(`${ROOT}/assets/app-v13.js`, appV13);
+  await fs.writeFile(`${ROOT}/assets/app-v13-2.js`, appV13);
 
   const baseCss = await fs.readFile(`${V12_SRC}/assets/style-v12.css`, 'utf8');
   const v13CssExtra = `
@@ -307,6 +308,7 @@ body.has-consent-banner{padding-bottom:130px}
 @media(max-width:380px){.wrap{padding:0 12px}.ad-slot{margin:16px -12px}}
 `;
   await fs.writeFile(`${ROOT}/assets/style-v13.css`, baseCss + v13CssExtra);
+  await fs.writeFile(`${ROOT}/assets/style-v13-2.css`, baseCss + v13CssExtra);
 
   // Create VM context to execute the exact optimizer and annual plan builder for static guides
   const ctx = vm.createContext({
@@ -785,12 +787,14 @@ body.has-consent-banner{padding-bottom:130px}
     const isFr = rel.startsWith('fr/');
 
     h = h
-      .replaceAll('/assets/style-v12.css', '/assets/style-v13.css')
-      .replaceAll('/assets/style-v10.css', '/assets/style-v13.css')
-      .replaceAll('/assets/style.css', '/assets/style-v13.css')
-      .replaceAll('/assets/app-v12.js', '/assets/app-v13.js')
-      .replaceAll('/assets/app-v11.js', '/assets/app-v13.js')
-      .replaceAll('/assets/app.js', '/assets/app-v13.js');
+      .replaceAll('/assets/style-v12.css', '/assets/style-v13-2.css')
+      .replaceAll('/assets/style-v10.css', '/assets/style-v13-2.css')
+      .replaceAll('/assets/style.css', '/assets/style-v13-2.css')
+      .replaceAll('/assets/style-v13.css', '/assets/style-v13-2.css')
+      .replaceAll('/assets/app-v12.js', '/assets/app-v13-2.js')
+      .replaceAll('/assets/app-v11.js', '/assets/app-v13-2.js')
+      .replaceAll('/assets/app.js', '/assets/app-v13-2.js')
+      .replaceAll('/assets/app-v13.js', '/assets/app-v13-2.js');
 
     h = h.replace(/<meta[^>]*name="google-adsense-account"[^>]*>/gi, '');
     h = h.replace(/<script[^>]*pagead2\.googlesyndication\.com[^>]*><\/script>/gi, '');
